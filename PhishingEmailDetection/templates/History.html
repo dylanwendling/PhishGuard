@@ -1,6 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard | History</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; padding: 0; margin: 0; }
+        
+        .navbar {
+            background-color: #3498db;
+            padding: 15px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .navbar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        .navbar a:hover { color: #3498db; }
+
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 50px; }
+        
+        /* History Item Styles */
+        .history-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fdfdfd;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .timestamp { color: #7f8c8d; font-size: 14px; }
+        .model-badge { background-color: #e8f4f8; color: #2980b9; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #bde0fe;}
+        
+        .score-row { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .score { font-size: 24px; font-weight: bold; color: #c62828; }
+        
+        .details h4 { margin: 10px 0 5px 0; color: #34495e; font-size: 14px; }
+        .details p { margin: 0; font-size: 14px; color: #555; }
+        .rules-list { margin: 5px 0 15px 0; padding-left: 20px; font-size: 14px; color: #555;}
+        
+        /* New Button Styles */
+        .btn-small { 
+            display: inline-block; 
+            text-decoration: none; 
+            background-color: #3498db; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            font-size: 14px; 
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .btn-small:hover { background-color: #2980b9; }
+        
+        .btn-clear {
+            background-color: #e74c3c; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-clear:hover { background-color: #c0392b; }
+
+        .empty-state { text-align: center; color: #7f8c8d; padding: 40px 0; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/history">History</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/common_breaches">Common Breaches</a>
+        <a href="/howto">How-To</a>
+    </nav>
+
+    <div class="container">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">
+            <h1 style="margin: 0; border: none; padding: 0; color: #2c3e50;">Scan History</h1>
+            
+            {% if history %}
+            <form action="/clear_history" method="POST" style="margin: 0;">
+                <button type="submit" class="btn-clear">🗑️ Clear History</button>
+            </form>
+            {% endif %}
+        </div>
+
+        {% if history %}
+            {% for item in history %}
+            <div class="history-card">
+                <div class="history-header">
+                    <span class="timestamp">{{ item.timestamp }}</span>
+                    <span class="model-badge">{{ item.model_used }}</span>
+                </div>
+                
+                <div class="score-row">
+                    <span class="score">Score: {{ item.score }}/100</span>
+                </div>
+
+                <div class="details">
+                    {% if item.rules %}
+                    <h4>Triggered Rules:</h4>
+                    <ul class="rules-list">
+                        {% for rule in item.rules %}
+                            <li>{{ rule }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    <a href="/report/{{ item.id if item.id else item.timestamp }}" class="btn-small">View Full Report</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>No scans have been performed yet.</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
