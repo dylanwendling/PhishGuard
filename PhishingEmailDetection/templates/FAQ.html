@@ -1,6 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f7f9fc;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    details {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 15px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    summary {
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: right;
+      font-size: 1.2rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="faq-container">
+    <h1>Frequently Asked Questions (FAQ)</h1>
+
+    <details>
+      <summary>What is PhishGuard?</summary>
+      <p>PhishGuard is an AI-powered tool designed to analyze emails for potential phishing threats. It evaluates different email features and provides a risk score with explanations.</p>
+    </details>
+
+    <details>
+      <summary>How does PhishGuard work?</summary>
+      <p>PhishGuard uses machine learning models such as SmolM2-1.35M, Llama-3.2-1B, and Qwen 2.5-1.5B trained on phishing and legitimate email datasets. It analyzes sender information, email content, links, and attachments to estimate phishing risk.</p>
+    </details>
+
+    <details>
+      <summary>Is PhishGuard free to use?</summary>
+      <p>Yes, PhishGuard is currently free to use and is intended to help users stay protected from phishing attacks.</p>
+    </details>
+
+    <details>
+      <summary>How accurate is PhishGuard?</summary>
+      <p>No phishing detector can guarantee 100% accuracy. PhishGuard aims to provide strong detection support, but users should still be cautious with suspicious emails.</p>
+    </details>
+
+    <details>
+      <summary>What do I do if the message looks suspicious?</summary>
+      <p>Do not click links or download attachments. Report the email to your IT team or administrator and avoid interacting with the sender.</p>
+    </details>
+
+    <details>
+      <summary>How do you detect phishing emails?</summary>
+      <p>PhishGuard checks sender identity, suspicious links, message wording, and attachments. It then uses machine learning to identify patterns often found in phishing emails.</p>
+    </details>
+
+    <details>
+      <summary>What is a breach and where does the data come from?</summary>
+      <p>A breach is an unauthorized exposure of sensitive data. PhishGuard’s training data may come from public phishing datasets and reported phishing examples used for research and model improvement.</p>
+    </details>
+  </div>
 </body>
 </html>
