@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, cli
+from flask import Flask, render_template, request, session, cli, redirect
 import os
 import sys
 import json
@@ -20,11 +20,13 @@ MODELS = {
     'qwen': {'name': 'Qwen2.5-1.5B', 'function': run_qwen, 'speed': '🎯 Most Accurate'}
 }
 
+# Safely disables the Flask startup banner that causes colorama to crash in Jupyter terminals
 cli.show_server_banner = lambda *args: None
 
 HISTORY_FILE = 'scan_history.json'
 
 def save_to_history(result_data):
+    # Loads existing history or creates an empty list if the file does not exist
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, 'r') as f:
             try:
@@ -34,29 +36,37 @@ def save_to_history(result_data):
     else:
         history = []
     
+    # Generates a unique ID and timestamp for the new scan
     result_data['id'] = str(uuid.uuid4())
     result_data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
+    # Adds the new result to the beginning of the list
     history.insert(0, result_data)
     
+    # Saves the updated list back to the file
     with open(HISTORY_FILE, 'w') as f:
         json.dump(history, f, indent=4)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # Sets default model to Qwen if not already set
     if 'selected_model' not in session:
         session['selected_model'] = 'qwen'
     
     if request.method == 'POST':
+        # Updates the selected model based on user input
         if 'model_select' in request.form:
             session['selected_model'] = request.form['model_select']
             
+        # Processes the uploaded file
         if 'file' in request.files:
             file = request.files['file']
             
+            # Validates that a file was actually selected
             if file.filename == '':
                 return "No valid file uploaded", 400
             
+            # Checks for the correct .eml file extension
             if file and file.filename.endswith('.eml'):
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
                 file.save(filepath)
@@ -65,8 +75,10 @@ def index():
                 model_func = MODELS[model_key]['function']
                 
                 try:
+                    # Runs the selected model on the file
                     actual_results = model_func(filepath)
                     
+                    # Formats the results dictionary to ensure compatibility
                     if isinstance(actual_results, dict):
                         actual_results['model_used'] = MODELS[model_key]['name']
                     else:
@@ -76,6 +88,7 @@ def index():
                             "model_used": MODELS[model_key]['name']
                         }
                     
+                    # Saves the successful scan to the history file
                     save_to_history(actual_results)
                     
                     return render_template('results.html', results=actual_results)
@@ -91,6 +104,7 @@ def index():
 
 @app.route('/history')
 def history():
+    # Loads the history data to pass to the template
     scan_history = []
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, 'r') as f:
@@ -101,8 +115,18 @@ def history():
                 
     return render_template('History.html', history=scan_history)
 
+@app.route('/clear_history', methods=['POST'])
+def clear_history():
+    # Deletes the history file if it exists
+    if os.path.exists(HISTORY_FILE):
+        os.remove(HISTORY_FILE)
+    
+    # Redirects the user back to the history page to see the empty state
+    return redirect('/history')
+
 @app.route('/report/<scan_id>')
 def view_report(scan_id):
+    # Searches the history file for the specific scan ID and returns its data
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, 'r') as f:
             try:
@@ -133,6 +157,7 @@ def howto():
 
 @app.route('/set_model/<model_name>')
 def set_model(model_name):
+    # Changes the model in the session based on user selection
     if model_name in MODELS:
         session['selected_model'] = model_name
     return render_template('index.html', 
@@ -140,5 +165,6 @@ def set_model(model_name):
                          selected_model=session['selected_model'])
 
 if __name__ == '__main__':
+    # Prints a plain-text confirmation so you know it's running
     print("Starting PhishGuard server on http://127.0.0.1:5000 ...")
     app.run(debug=True, use_reloader=False)
