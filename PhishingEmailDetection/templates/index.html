@@ -5,8 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard | Upload</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; text-align: center; padding: 50px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; text-align: center; padding: 0; margin: 0; }
+        
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: #3498db;
+            padding: 15px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        .navbar a:hover {
+            color: #3498db;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 50px; }
         h1 { color: #2c3e50; margin-bottom: 5px; }
         .subtitle { color: #7f8c8d; margin-bottom: 30px; }
         
@@ -40,6 +60,15 @@
     </style>
 </head>
 <body>
+    <nav class="navbar">
+    <a href="/">Home</a>
+    <a href="/history">History</a>
+    <a href="/about">About</a>
+    <a href="/faq">FAQ</a>
+    <a href="/common_breaches">Common Breaches</a>
+    <a href="/howto">How-To</a>
+</nav>
+
     <div class="container">
         <h1>🛡️ PhishGuard</h1>
         <p class="subtitle">Upload an .eml file to scan for phishing indicators, malicious links, and domain spoofing.</p>

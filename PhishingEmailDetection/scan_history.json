@@ -1,0 +1,22 @@
+[
+    {
+        "score": 60,
+        "rules": [
+            "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
+            "Sender email contains suspicious numbers (Possible spoofing)"
+        ],
+        "explanation": "This email appears to be a phishing attempt. It falsely claims that the recipient's account has been compromised and requires verification of identity immediately, which is a common tactic used by cybercriminals to steal sensitive information or money from unsuspecting victims. The link provided in the email leads to an unsecured website (http://www.paypa1-security-update.com/login-secure-auth), which could be maliciously designed to capture login credentials and other personal data. Therefore, this message should be considered suspicious and not trusted.",
+        "model_used": "Qwen2.5-1.5B",
+        "timestamp": "2026-04-07 16:27:33"
+    },
+    {
+        "score": 60,
+        "rules": [
+            "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
+            "Sender email contains suspicious numbers (Possible spoofing)"
+        ],
+        "explanation": "This email appears to be suspicious. The email is attempting to trick the recipient into clicking a link that redirects them to a website where they may enter their login credentials, which could potentially allow an attacker access to the user's account and sensitive information. The urgency of the message (immediate verification required) and the use of technical jargon (\"unrecognized device\", \"secure link\") suggest it is likely a phishing attempt designed to trick users into providing personal or financial information.",
+        "model_used": "Qwen2.5-1.5B",
+        "timestamp": "2026-04-07 16:16:43"
+    }
+]
