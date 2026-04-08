@@ -1,6 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common Breaches</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f7f9fc;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    details {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 15px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    summary {
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: right;
+      font-size: 1.2rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="faq-container">
+    <h1>Common Breaches</h1>
+
+    <details>
+      <summary>Email Phishing</summary>
+      <p>
+        Attackers send fake emails that appear to come from trusted organizations such as
+        banks, schools, or online services. These emails often contain suspicious links,
+        urgent messages, or fake login requests intended to steal user credentials.
+      </p>
+    </details>
+
+    <details>
+      <summary>Spear Phishing</summary>
+      <p>
+        This is a targeted form of phishing aimed at a specific person or group. The attacker
+        uses personal details to make the message appear more believable and increase the
+        chances of the victim clicking a malicious link or sharing confidential information.
+      </p>
+    </details>
+
+    <details>
+      <summary>Malicious Attachments</summary>
+      <p>
+        Some phishing messages include infected attachments disguised as invoices, forms,
+        or urgent documents. Opening these files can install malware or redirect the user
+        to harmful websites.
+      </p>
+    </details>
+
+    <details>
+      <summary>Business Email Compromise (BEC)</summary>
+      <p>
+        In BEC attacks, cybercriminals impersonate high-level executives or trusted partners
+        to trick employees into transferring money or sharing sensitive data. These attacks
+        often involve social engineering and careful research on the target organization.
+      </p>
+    </details>
+  </div>
 </body>
 </html>
