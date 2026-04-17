@@ -5,15 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard | Real-Time Analysis</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; }
+        /* Global styling matching the theme */
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            margin: 0; 
+            line-height: 1.6;
+        }
         
-        .navbar { background-color: #3498db; padding: 15px 0; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .navbar a { color: #ecf0f1; text-decoration: none; margin: 0 20px; font-weight: bold; font-size: 16px; }
+        /* Fixed Navigation Bar */
+        .navbar { 
+            background-color: #3498db; 
+            padding: 15px 0; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            margin-bottom: 20px;
+        }
+        .navbar a { 
+            color: #ecf0f1; 
+            text-decoration: none; 
+            margin: 0 20px; 
+            font-weight: bold; 
+            font-size: 16px; 
+            transition: color 0.2s;
+        }
+        .navbar a:hover {
+            color: #2c3e50; /* Fixed hover color */
+        }
         
-        .container { display: flex; padding: 20px; gap: 20px; height: calc(100vh - 100px); }
-        .panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow-y: auto; position: relative; }
+        /* Main Layout */
+        .container { 
+            display: flex; 
+            padding: 0 20px 20px 20px; 
+            gap: 20px; 
+            max-width: 1400px;
+            margin: 0 auto;
+            height: calc(100vh - 100px); 
+        }
+
+        /* Animated Panel Styling */
+        .panel { 
+            flex: 1; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            overflow-y: auto; 
+            position: relative; 
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        /* Panel Accents & Delays */
+        .panel:nth-child(1) { border-left: 5px solid #3498db; animation-delay: 0.1s; }
+        .panel:nth-child(2) { border-left: 5px solid #e67e22; animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 { color: #2c3e50; margin-top: 0; margin-bottom: 15px; }
+        p, label { color: #444; }
+
         .upload-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
         
+        /* Interactive Elements */
+        select, input[type="file"] { 
+            padding: 10px; 
+            margin-bottom: 15px; 
+            width: 100%; 
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #fdfdfd;
+        }
+        
+        button { 
+            background-color: #3498db; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        button:hover { background-color: #2980b9; }
+
+        /* Highlight Styling */
         .highlight { 
             background-color: #ffeca8; 
             border-bottom: 2px solid #f39c12;
@@ -38,13 +122,11 @@
         }
 
         .score-badge { display: inline-block; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 1.2em; margin-bottom: 15px; }
-        .score-high { background-color: #ff7675; color: white; }
-        .score-med { background-color: #ffeaa7; color: #333; }
-        .score-low { background-color: #55efc4; color: #333; }
+        .score-high { background-color: #e74c3c; color: white; }
+        .score-med { background-color: #f39c12; color: white; }
+        .score-low { background-color: #2ecc71; color: white; }
         
         .hidden { display: none; }
-        select { padding: 8px; margin-bottom: 15px; width: 100%; }
-        button { background-color: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
         
         .tooltip-btn {
             position: absolute;
@@ -59,28 +141,34 @@
             transition: background-color 0.2s;
         }
         .tooltip-btn:hover { background-color: #34495e; }
+
+        /* Mobile responsiveness */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; height: auto; }
+            .panel { height: 500px; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/history">History</a>
-    <a href="/about">About</a>
-    <a href="/faq">FAQ</a>
-    <a href="/common_breaches">Common Breaches</a>
-    <a href="/howto">How-To</a>
-    <a href="/realtime">Real-Time Scan</a>
-</nav>
+        <a href="/">Home</a>
+        <a href="/realtime">Real-Time Scan</a>
+        <a href="/history">History</a>
+        <a href="/howto">How-To</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/common_breaches">Common Breaches</a>
+    </nav>
 
     <div class="container">
         <div class="panel">
             <div class="upload-section">
-                <h2>Upload Email for Live Scan</h2>
+                <h2>📥 Upload Email for Live Scan</h2>
                 <input type="file" id="emailFile" accept=".eml">
                 <button onclick="uploadEmail()">Extract Content</button>
                 
-                <div style="margin-top: 15px;">
-                    <label>Select AI Model:</label>
+                <div style="margin-top: 20px;">
+                    <label style="font-weight:bold; display:block; margin-bottom:5px;">Select AI Model:</label>
                     <select id="modelSelect">
                         {% for key, model in models.items() %}
                         <option value="{{ key }}" {% if selected_model == key %}selected{% endif %}>
@@ -91,24 +179,26 @@
                 </div>
             </div>
             
-            <div id="emailDisplay" style="white-space: pre-wrap; font-family: monospace; line-height: 1.5;">
+            <div id="emailDisplay" style="white-space: pre-wrap; font-family: monospace; line-height: 1.5; padding: 15px; background: #f9f9f9; border-radius: 4px; border: 1px solid #eee;">
                 Upload an .eml file to see the content here.
             </div>
             <div id="analyzeTooltip" class="tooltip-btn hidden" onclick="analyzeCustomSelection()">🔍 Analyze Selection</div>
         </div>
 
         <div class="panel">
-            <h2>AI Analysis</h2>
+            <h2>🤖 AI Analysis</h2>
             <p>Click on highlighted text or highlight your own text to analyze it.</p>
             
-            <div id="loadingAnalysis" class="hidden">Analyzing with AI...</div>
+            <div id="loadingAnalysis" class="hidden" style="color: #3498db; font-weight: bold; margin-top: 20px;">
+                ⏳ Analyzing with AI...
+            </div>
             
             <div id="analysisResult" class="hidden">
                 <div id="threatScore" class="score-badge"></div>
-                <h4 style="margin-top:0;">Selected Text:</h4>
-                <blockquote id="selectedTextDisplay" style="background: #f9f9f9; padding: 10px; border-left: 4px solid #3498db; margin: 0 0 20px 0;"></blockquote>
-                <h4>AI Insights:</h4>
-                <p id="aiExplanation"></p>
+                <h4 style="margin-top:0; color: #2c3e50;">Selected Text:</h4>
+                <blockquote id="selectedTextDisplay" style="background: #fdfdfd; padding: 15px; border-left: 4px solid #3498db; margin: 0 0 25px 0; border-radius: 0 4px 4px 0; color: #555; font-style: italic;"></blockquote>
+                <h4 style="color: #2c3e50;">AI Insights:</h4>
+                <p id="aiExplanation" style="background: #f9f9f9; padding: 15px; border-radius: 4px; border: 1px solid #eee;"></p>
             </div>
         </div>
     </div>
@@ -234,6 +324,8 @@
                 const scoreDiv = document.getElementById('threatScore');
                 scoreDiv.innerText = `Threat Score: ${data.score}/100`;
                 scoreDiv.className = 'score-badge';
+                
+                // Updated colors to match the new theme's color palette
                 if (data.score > 70) scoreDiv.classList.add('score-high');
                 else if (data.score > 30) scoreDiv.classList.add('score-med');
                 else scoreDiv.classList.add('score-low');

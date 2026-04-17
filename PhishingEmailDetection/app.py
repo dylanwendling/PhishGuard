@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, cli, redirect
+from flask import Flask, render_template, request, session, cli, redirect, send_from_directory
 import os
 import sys
 import json
@@ -112,6 +112,11 @@ def index():
     return render_template('index.html', 
                          models=MODELS, 
                          selected_model=session['selected_model'])
+
+# Creates a route to serve files directly from the images folder
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('images', filename)
 
 @app.route('/history')
 def history():

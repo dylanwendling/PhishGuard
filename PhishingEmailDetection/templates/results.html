@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard | Analysis Results</title>
     <style>
-        /* Removes default padding and margin so the navbar stretches across the top */
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; padding: 0; margin: 0; }
+        /* Sets the global styling for the page */
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            padding: 0; 
+            margin: 0; 
+            line-height: 1.6;
+        }
         
-        /* Styles the navigation bar and its links */
+        /* Styles the navigation bar */
         .navbar {
             background-color: #3498db;
             padding: 15px 0;
@@ -16,6 +23,8 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center;
         }
+        
+        /* Styles the links within the navigation bar */
         .navbar a {
             color: #ecf0f1;
             text-decoration: none;
@@ -24,34 +33,110 @@
             font-size: 16px;
             transition: color 0.2s;
         }
+        
+        /* Changes the link color when hovered */
         .navbar a:hover {
-            color: #3498db;
+            color: #2c3e50;
         }
 
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 50px; }
-        .header-flex { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;}
-        h1 { color: #2c3e50; margin: 0;}
-        .model-badge { background-color: #e8f4f8; color: #2980b9; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid #bde0fe;}
+        /* Defines the main container for the content */
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            border-left: 5px solid #e74c3c;
+            margin-bottom: 50px; 
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Keyframes for the fade-in and slide-up animation */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styles the header section of the results */
+        .header-flex { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid #eee; 
+            padding-bottom: 10px; 
+            margin-bottom: 20px;
+        }
         
-        .score-box { background-color: #ffebee; color: #c62828; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; border: 1px solid #ffcdd2; }
+        h1 { color: #2c3e50; margin: 0; font-size: 2em; }
+        
+        /* Styles the model indicator badge */
+        .model-badge { 
+            background-color: #e8f4f8; 
+            color: #2980b9; 
+            padding: 5px 12px; 
+            border-radius: 20px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            border: 1px solid #bde0fe;
+        }
+        
+        /* Styles the score display box */
+        .score-box { 
+            background-color: #ffebee; 
+            color: #c62828; 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            border: 1px solid #ffcdd2; 
+        }
+        
         .score-box h2 { margin: 0; font-size: 36px; }
+        
+        /* Styles the individual sections */
         .section { margin-bottom: 20px; }
-        .section h3 { color: #34495e; }
-        .rules-list { background-color: #fff3e0; padding: 15px 30px; border-radius: 8px; border: 1px solid #ffe0b2; }
-        .btn { display: inline-block; margin-top: 20px; text-decoration: none; background-color: #7f8c8d; color: white; padding: 10px 20px; border-radius: 4px; }
-        .btn:hover { background-color: #95a5a6; }
+        .section h3 { color: #34495e; margin-bottom: 10px; }
+        
+        /* Styles the list of triggered rules */
+        .rules-list { 
+            background-color: #fff3e0; 
+            padding: 15px 30px; 
+            border-radius: 8px; 
+            border: 1px solid #ffe0b2; 
+        }
+        
+        /* Styles the action button */
+        .btn { 
+            display: inline-block; 
+            margin-top: 20px; 
+            text-decoration: none; 
+            background-color: #3498db; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 4px; 
+            font-weight: bold;
+            transition: background-color 0.2s; 
+        }
+        
+        /* Changes the button color when hovered */
+        .btn:hover { background-color: #2980b9; }
     </style>
 </head>
 <body>
     <nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/history">History</a>
-    <a href="/about">About</a>
-    <a href="/faq">FAQ</a>
-    <a href="/common_breaches">Common Breaches</a>
-    <a href="/howto">How-To</a>
-    <a href="/realtime">Real-Time Scan</a>
-</nav>
+        <a href="/">Home</a>
+        <a href="/realtime">Real-Time Scan</a>
+        <a href="/history">History</a>
+        <a href="/howto">How-To</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/common_breaches">Common Breaches</a>
+    </nav>
 
     <div class="container">
         <div class="header-flex">
@@ -60,7 +145,7 @@
         </div>
         
         <div class="score-box">
-            <p>Phishing Risk Score</p>
+            <p style="margin-top: 0; font-weight: bold;">Phishing Risk Score</p>
             <h2>{{ results.score }} / 100</h2>
         </div>
 
@@ -75,7 +160,7 @@
 
         <div class="section">
             <h3>Explanation:</h3>
-            <p>{{ results.explanation }}</p>
+            <p style="color: #444;">{{ results.explanation }}</p>
         </div>
 
         <a href="/" class="btn">Scan Another Email</a>

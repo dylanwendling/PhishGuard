@@ -1,6 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard | How-To Guide</title>
+    <style>
+        /* Sets the global styling for the page */
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6;
+        }
+        
+        /* Styles the navigation bar */
+        .navbar {
+            background-color: #3498db;
+            padding: 15px 0;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Styles the links within the navigation bar */
+        .navbar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        
+        /* Adds a hover effect to the navigation links */
+        .navbar a:hover {
+            color: #2c3e50;
+        }
+
+        /* Defines the main container for the content */
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px 50px 20px; 
+        }
+
+        /* Styles the main page heading */
+        h1 { 
+            color: #2c3e50; 
+            text-align: center; 
+            font-size: 2.5em; 
+            margin-bottom: 10px; 
+        }
+
+        /* Styles the subtitle below the main heading */
+        .subtitle { 
+            color: #7f8c8d; 
+            text-align: center; 
+            margin-bottom: 50px; 
+            font-size: 1.1em; 
+        }
+
+        /* Defines the layout for individual instructional steps */
+        .step-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; 
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Adds a hover effect to the step cards */
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Applies animation delays to stagger the appearance of cards */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.5s; }
+        .delay-4 { animation-delay: 0.7s; }
+
+        /* Keyframes for the fade-in and slide-up animation */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styles the headings within the step cards */
+        .step-card h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Styles the step number circles */
+        .step-number {
+            background-color: #3498db;
+            color: white;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.2em;
+        }
+
+        /* Styles the grid layout for the email provider instructions */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Styles the container for the instructional images */
+        .image-container {
+            background-color: #eaf2f8;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px dashed #bdc3c7;
+        }
+
+        /* Ensures images are responsive and adds the zoom hover effect */
+        .image-container img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: zoom-in;
+        }
+
+        /* Scales the image to 145 percent of its original size and brings it to the front when hovered */
+        .image-container img:hover {
+            transform: scale(1.45);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Styles the feature lists within the step cards */
+        ul.feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        /* Adds custom bullet points to the feature lists */
+        ul.feature-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        /* Styles the custom bullet points */
+        ul.feature-list li::before {
+            content: "✓";
+            color: #2ecc71;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Styles the visual highlight examples in the text */
+        .fake-highlight {
+            background-color: #ffeca8;
+            border-bottom: 2px solid #f39c12;
+            border-radius: 3px;
+            padding: 2px 4px;
+            color: #d35400;
+            font-weight: bold;
+        }
+
+        /* Styles the button links */
+        .action-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+
+        /* Adds a hover effect to the action buttons */
+        .action-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Changes the layout from two columns to one column on screens narrower than 800 pixels */
+        @media (max-width: 800px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
     
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/realtime">Real-Time Scan</a>
+        <a href="/history">History</a>
+        <a href="/howto">How-To</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/common_breaches">Common Breaches</a>
+    </nav>
+
+    <div class="container">
+        <h1>📖 How to Use PhishGuard</h1>
+        <p class="subtitle">Your complete guide to exporting emails and analyzing them for threats.</p>
+
+        <div class="step-card delay-1">
+            <h2><span class="step-number">1</span> Download an Email as an .eml File</h2>
+            <p>PhishGuard requires the raw data of an email to properly analyze headers, hidden links, and sender information. To begin, you need to download a suspicious email to your computer.</p>
+            
+            <div class="grid-2">
+                <div class="image-container">
+                    <h3>For Gmail Users</h3>
+                    <p>Open the email, click the <strong>three vertical dots (More)</strong> in the top right corner, and select <strong>"Download message"</strong>.</p>
+                    <img src="/images/Screenshot_howto_1.png" alt="Screenshot showing how to download an eml file from Gmail">
+                </div>
+                <div class="image-container">
+                    <h3>For Outlook Users</h3>
+                    <p>Open the email, click <strong>"More actions" (...)</strong>, and select <strong>"Download"</strong>. Alternatively, you can double-click the email to open it in a new window, click File, and choose Save As.</p>
+                    <img src="/images/Screenshot_howto_2.png" alt="Screenshot showing how to download an eml file from Outlook">
+                </div>
+            </div>
+        </div>
+
+        <div class="step-card delay-2" style="border-left-color: #9b59b6;">
+            <h2><span class="step-number" style="background-color: #9b59b6;">2</span> Use the Standard Upload Scanner</h2>
+            <p>If you want a comprehensive report on the entire email, use the main Upload tool located on the Home page.</p>
+            <ul class="feature-list">
+                <li><strong>Select your AI Model:</strong> Choose between available models (e.g., faster scanning vs. deeper analysis).</li>
+                <li><strong>Upload:</strong> Click the upload area and select the <code>.eml</code> file you downloaded in Step 1.</li>
+                <li><strong>Analyze:</strong> Click "Analyze Email" to generate a full report detailing malicious links, spoofed domains, and a general threat assessment.</li>
+            </ul>
+            <a href="/" class="action-btn" style="background-color: #9b59b6;">Go to Upload Scanner</a>
+        </div>
+
+        <div class="step-card delay-3" style="border-left-color: #e67e22;">
+            <h2><span class="step-number" style="background-color: #e67e22;">3</span> Explore the Real-Time Scan Tool</h2>
+            <p>The Real-Time Scan tool allows you to interactively investigate specific parts of an email text without waiting for a full report.</p>
+            <ul class="feature-list">
+                <li><strong>Extract Content:</strong> Upload your <code>.eml</code> file to strip away formatting and view the raw text.</li>
+                <li><strong>Click Highlights:</strong> PhishGuard automatically highlights suspicious elements like <span class="fake-highlight">urgent keywords</span>, emails, and URLs. Click them for an instant AI breakdown.</li>
+                <li><strong>Custom Selection:</strong> Highlight any custom block of text with your mouse. A <strong>"🔍 Analyze Selection"</strong> tooltip will appear. Click it to send that specific text to the AI.</li>
+                <li><strong>Threat Scores:</strong> Instantly see if a highlighted phrase registers as a High (Red), Medium (Yellow), or Low (Green) threat.</li>
+            </ul>
+            <a href="/realtime" class="action-btn" style="background-color: #e67e22;">Try Real-Time Scan</a>
+        </div>
+
+        <div class="step-card delay-4" style="border-left-color: #2ecc71;">
+            <h2><span class="step-number" style="background-color: #2ecc71;">4</span> Review and Act</h2>
+            <p>Once PhishGuard has provided its analysis, review the AI Insights carefully. If an email is flagged with a high threat score, <strong>do not click any links or download any attachments within the original email.</strong> Mark the email as Spam/Phishing in your email client and delete it.</p>
+        </div>
+
+    </div>
 </body>
 </html>

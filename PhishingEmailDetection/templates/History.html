@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard | History</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; padding: 0; margin: 0; }
+        /* Sets the global styling for the page */
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            padding: 0; 
+            margin: 0; 
+            line-height: 1.6;
+        }
         
-        /* Styles the navigation bar and its links */
+        /* Styles the navigation bar */
         .navbar {
             background-color: #3498db;
             padding: 15px 0;
@@ -15,6 +23,8 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center;
         }
+        
+        /* Styles the links within the navigation bar */
         .navbar a {
             color: #ecf0f1;
             text-decoration: none;
@@ -23,37 +33,87 @@
             font-size: 16px;
             transition: color 0.2s;
         }
+        
+        /* Changes the link color when hovered */
         .navbar a:hover {
-            color: #3498db;
+            color: #2c3e50;
         }
 
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 50px; }
-        
-        /* History Item Styles */
-        .history-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #fdfdfd;
+        /* Defines the main container for the content */
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            margin-bottom: 50px; 
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.4s ease-out forwards;
         }
+
+        /* Keyframes for the fade-in and slide-up animation */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Styles individual history item cards */
+        .history-card {
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        /* Adds a lift effect to history cards when hovered */
+        .history-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Alternates the border color of the history cards */
+        .history-card:nth-of-type(odd) { border-left: 5px solid #3498db; }
+        .history-card:nth-of-type(even) { border-left: 5px solid #9b59b6; }
+        
+        /* Styles the header row inside history cards */
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-        .timestamp { color: #7f8c8d; font-size: 14px; }
-        .model-badge { background-color: #e8f4f8; color: #2980b9; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #bde0fe;}
         
-        .score-row { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .timestamp { color: #7f8c8d; font-size: 14px; font-weight: bold; }
+        
+        /* Styles the model indicator badge */
+        .model-badge { 
+            background-color: #e8f4f8; 
+            color: #2980b9; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: bold; 
+            border: 1px solid #bde0fe;
+        }
+        
+        /* Styles the score display row */
+        .score-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         .score { font-size: 24px; font-weight: bold; color: #c62828; }
         
         .details h4 { margin: 10px 0 5px 0; color: #34495e; font-size: 14px; }
         .details p { margin: 0; font-size: 14px; color: #555; }
         .rules-list { margin: 5px 0 15px 0; padding-left: 20px; font-size: 14px; color: #555;}
         
-        /* New Button Styles */
+        /* Styles the small action buttons */
         .btn-small { 
             display: inline-block; 
             text-decoration: none; 
@@ -64,9 +124,13 @@
             font-size: 14px; 
             font-weight: bold;
             transition: background-color 0.2s;
+            margin-top: 10px;
         }
+        
+        /* Changes the small button color when hovered */
         .btn-small:hover { background-color: #2980b9; }
         
+        /* Styles the clear history button */
         .btn-clear {
             background-color: #e74c3c; 
             color: white; 
@@ -77,26 +141,29 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
+        
+        /* Changes the clear history button color when hovered */
         .btn-clear:hover { background-color: #c0392b; }
 
-        .empty-state { text-align: center; color: #7f8c8d; padding: 40px 0; }
+        /* Styles the message displayed when there is no history */
+        .empty-state { text-align: center; color: #7f8c8d; padding: 40px 0; font-size: 1.1em; }
     </style>
 </head>
 <body>
     <nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/history">History</a>
-    <a href="/about">About</a>
-    <a href="/faq">FAQ</a>
-    <a href="/common_breaches">Common Breaches</a>
-    <a href="/howto">How-To</a>
-    <a href="/realtime">Real-Time Scan</a>
-</nav>
+        <a href="/">Home</a>
+        <a href="/realtime">Real-Time Scan</a>
+        <a href="/history">History</a>
+        <a href="/howto">How-To</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/common_breaches">Common Breaches</a>
+    </nav>
 
     <div class="container">
         
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">
-            <h1 style="margin: 0; border: none; padding: 0; color: #2c3e50;">Scan History</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 30px;">
+            <h1 style="margin: 0; border: none; padding: 0; color: #2c3e50; font-size: 2em;">Scan History</h1>
             
             {% if history %}
             <form action="/clear_history" method="POST" style="margin: 0;">

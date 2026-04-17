@@ -3,59 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ</title>
+  <title>PhishGuard | FAQ</title>
   <style>
+    /* Global styling matching the theme */
     body {
       font-family: Arial, sans-serif;
-      margin: 40px;
-      background: #f7f9fc;
-      color: #222;
+      background-color: #f4f7f6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
     }
 
-    /* Styles the navigation bar and its links */
-        .navbar {
-            background-color: #3498db;
-            padding: 15px 0;
-            margin-bottom: 40px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .navbar a {
-            color: #ecf0f1;
-            text-decoration: none;
-            margin: 0 20px;
-            font-weight: bold;
-            font-size: 16px;
-            transition: color 0.2s;
-        }
-        .navbar a:hover {
-            color: #3498db;
-        }
+    /* Fixed Navigation Bar */
+    .navbar {
+      background-color: #3498db;
+      padding: 15px 0;
+      margin-bottom: 40px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .navbar a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    .navbar a:hover {
+      color: #2c3e50; /* Fixed: Now visible on hover */
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 50px 20px;
+    }
 
     h1 {
+      color: #2c3e50;
       text-align: center;
-      margin-bottom: 30px;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      margin-top: 0;
     }
 
-    .faq-container {
-      max-width: 800px;
-      margin: auto;
+    .subtitle {
+      color: #7f8c8d;
+      text-align: center;
+      margin-bottom: 50px;
+      font-size: 1.1em;
     }
 
+    /* Interactive Dropdown Cards */
     details {
       background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      padding: 15px 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border-left: 5px solid #3498db;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease-out forwards;
     }
 
+    details:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    /* Alternating Card Colors */
+    details:nth-of-type(1) { border-left-color: #3498db; animation-delay: 0.1s; }
+    details:nth-of-type(2) { border-left-color: #9b59b6; animation-delay: 0.2s; }
+    details:nth-of-type(3) { border-left-color: #e67e22; animation-delay: 0.3s; }
+    details:nth-of-type(4) { border-left-color: #2ecc71; animation-delay: 0.4s; }
+    details:nth-of-type(5) { border-left-color: #e74c3c; animation-delay: 0.5s; }
+    details:nth-of-type(6) { border-left-color: #f1c40f; animation-delay: 0.6s; }
+    details:nth-of-type(7) { border-left-color: #34495e; animation-delay: 0.7s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Summary / Question Styling */
     summary {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: bold;
-      cursor: pointer;
+      color: #2c3e50;
       list-style: none;
+      outline: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     summary::-webkit-details-marker {
@@ -64,33 +111,43 @@
 
     summary::after {
       content: "+";
-      float: right;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
+      color: #7f8c8d;
+      transition: transform 0.3s ease;
     }
 
     details[open] summary::after {
       content: "−";
+      transform: rotate(180deg);
+      color: #e74c3c;
     }
 
+    /* Answer Text Styling */
     details p {
-      margin-top: 12px;
+      margin-top: 15px;
+      margin-bottom: 0;
+      color: #444;
       line-height: 1.6;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
     }
   </style>
 </head>
 <body>
+  
   <nav class="navbar">
     <a href="/">Home</a>
+    <a href="/realtime">Real-Time Scan</a>
     <a href="/history">History</a>
+    <a href="/howto">How-To</a>
     <a href="/about">About</a>
     <a href="/faq">FAQ</a>
     <a href="/common_breaches">Common Breaches</a>
-    <a href="/howto">How-To</a>
-    <a href="/realtime">Real-Time Scan</a>
-</nav>
+  </nav>
 
-  <div class="faq-container">
-    <h1>Frequently Asked Questions (FAQ)</h1>
+  <div class="container">
+    <h1>❓ Frequently Asked Questions</h1>
+    <p class="subtitle">Everything you need to know about how PhishGuard protects your inbox.</p>
 
     <details>
       <summary>What is PhishGuard?</summary>
@@ -99,7 +156,7 @@
 
     <details>
       <summary>How does PhishGuard work?</summary>
-      <p>PhishGuard uses machine learning models such as SmolM2-1.35M, Llama-3.2-1B, and Qwen 2.5-1.5B trained on phishing and legitimate email datasets. It analyzes sender information, email content, links, and attachments to estimate phishing risk.</p>
+      <p>PhishGuard uses machine learning models such as SmolLM2-135M, Llama-3.2-1B, and Qwen2.5-1.5B trained on phishing and legitimate email datasets. It analyzes sender information, email content, links, and attachments to estimate phishing risk.</p>
     </details>
 
     <details>
@@ -127,5 +184,6 @@
       <p>A breach is an unauthorized exposure of sensitive data. PhishGuard’s training data may come from public phishing datasets and reported phishing examples used for research and model improvement.</p>
     </details>
   </div>
+
 </body>
 </html>

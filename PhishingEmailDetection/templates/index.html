@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard | Upload</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; text-align: center; padding: 0; margin: 0; }
+        /* Global styling matching the theme */
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            text-align: center; 
+            padding: 0; 
+            margin: 0; 
+            line-height: 1.6;
+        }
         
-        /* Navigation Bar Styles */
+        /* Fixed Navigation Bar */
         .navbar {
             background-color: #3498db;
             padding: 15px 0;
@@ -23,12 +32,33 @@
             transition: color 0.2s;
         }
         .navbar a:hover {
-            color: #3498db;
+            color: #2c3e50; /* Fixed hover color */
         }
 
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 50px; }
-        h1 { color: #2c3e50; margin-bottom: 5px; }
-        .subtitle { color: #7f8c8d; margin-bottom: 30px; }
+        /* Animated Main Container */
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            border-left: 5px solid #3498db;
+            margin-bottom: 50px; 
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 { color: #2c3e50; margin-bottom: 5px; margin-top: 0; font-size: 2.5em; }
+        .subtitle { color: #7f8c8d; margin-bottom: 30px; font-size: 1.1em; }
         
         /* Model Selection Styles */
         .model-grid { display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; }
@@ -41,7 +71,7 @@
             transition: all 0.2s;
             background-color: #fdfdfd;
         }
-        .model-card:hover { border-color: #3498db; background-color: #f0f8ff; }
+        .model-card:hover { border-color: #3498db; background-color: #f0f8ff; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         /* Hide the actual radio button */
         .model-card input[type="radio"] { display: none; }
         /* Style when the radio button inside is checked */
@@ -49,26 +79,34 @@
             border-color: #2ecc71;
             background-color: #eafaf1;
             box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+            transform: translateY(-2px);
         }
-        .model-name { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px;}
+        .model-name { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; color: #2c3e50;}
         .model-speed { display: block; font-size: 12px; color: #555; }
 
-        .upload-box { border: 2px dashed #3498db; padding: 40px; border-radius: 8px; background-color: #eaf2f8; }
-        input[type="file"] { margin-bottom: 20px; }
-        button { background-color: #3498db; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%;}
+        .upload-box { border: 2px dashed #3498db; padding: 40px; border-radius: 8px; background-color: #eaf2f8; transition: background-color 0.2s; }
+        .upload-box:hover { background-color: #e1edf7; }
+        
+        input[type="file"] { margin-bottom: 20px; color: #333; }
+        button { background-color: #3498db; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: background-color 0.2s; }
         button:hover { background-color: #2980b9; }
+
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            .model-grid { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/history">History</a>
-    <a href="/about">About</a>
-    <a href="/faq">FAQ</a>
-    <a href="/common_breaches">Common Breaches</a>
-    <a href="/howto">How-To</a>
-    <a href="/realtime">Real-Time Scan</a>
-</nav>
+        <a href="/">Home</a>
+        <a href="/realtime">Real-Time Scan</a>
+        <a href="/history">History</a>
+        <a href="/howto">How-To</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/common_breaches">Common Breaches</a>
+    </nav>
 
     <div class="container">
         <h1>🛡️ PhishGuard</h1>

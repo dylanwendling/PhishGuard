@@ -1,0 +1,13 @@
+[
+    {
+        "score": 60,
+        "rules": [
+            "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
+            "Sender email contains suspicious numbers (Possible spoofing)"
+        ],
+        "explanation": "Analyzing the provided text snippet, several phishing indicators are present:\n\n1. **Typosquatting**: The email contains typos in domain names such as \"paypa\" and \"security-update\". This indicates that the sender may have misspelled or misinterpreted the domain name for a legitimate company.\n\n2. **Domain spoofing**: The email includes an unrecognized device, which is likely to be a phishing attempt. It appears to be from an unknown entity with no known IP address and claiming to be a secure account management service.\n\n3. **Urgency cues**: The email mentions \"Restore full access\" but does not specify when this will happen or how long it may take. This suggests that the sender is trying to trick you into providing sensitive information, which could lead to your account suspension.\n\n4. **Security alerts**: The email includes a security alert about a temporary suspension of account access and password renewal. This indicates that the sender has taken steps to protect against unauthorized access and is attempting to deceive you into giving them more control over your account.\n\nTo prevent future phishing attempts, it's recommended to:\n\n1. Verify your identity immediately after receiving an email or message with a suspicious domain name.\n2. Use strong passwords for all accounts on your device.\n3. Enable two-factor authentication (2FA) whenever possible.\n4. Regularly update your operating system and software to the latest security patches.\n5. Consider using a reputable cybersecurity service provider that offers robust security features, such as 2FA.",
+        "model_used": "SmolLM2-135M",
+        "id": "1119a9e7-4542-435c-b1b0-6573857fb445",
+        "timestamp": "2026-04-17 00:14:23"
+    }
+]
