@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard | Real-Time Analysis</title>
     <style>
-        /* Global styling matching the theme */
         body { 
             font-family: Arial, sans-serif; 
             background-color: #f4f7f6; 
@@ -14,7 +13,6 @@
             line-height: 1.6;
         }
         
-        /* Fixed Navigation Bar */
         .navbar { 
             background-color: #3498db; 
             padding: 15px 0; 
@@ -31,10 +29,9 @@
             transition: color 0.2s;
         }
         .navbar a:hover {
-            color: #2c3e50; /* Fixed hover color */
+            color: #2c3e50;
         }
         
-        /* Main Layout */
         .container { 
             display: flex; 
             padding: 0 20px 20px 20px; 
@@ -44,7 +41,6 @@
             height: calc(100vh - 100px); 
         }
 
-        /* Animated Panel Styling */
         .panel { 
             flex: 1; 
             background: white; 
@@ -53,28 +49,16 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
             overflow-y: auto; 
             position: relative; 
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s ease-out forwards;
         }
-        
-        /* Panel Accents & Delays */
-        .panel:nth-child(1) { border-left: 5px solid #3498db; animation-delay: 0.1s; }
-        .panel:nth-child(2) { border-left: 5px solid #e67e22; animation-delay: 0.3s; }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .panel:nth-child(1) { border-left: 5px solid #3498db; }
+        .panel:nth-child(2) { border-left: 5px solid #e67e22; }
 
         h2 { color: #2c3e50; margin-top: 0; margin-bottom: 15px; }
         p, label { color: #444; }
 
         .upload-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
         
-        /* Interactive Elements */
         select, input[type="file"] { 
             padding: 10px; 
             margin-bottom: 15px; 
@@ -97,7 +81,6 @@
         }
         button:hover { background-color: #2980b9; }
 
-        /* Highlight Styling */
         .highlight { 
             background-color: #ffeca8; 
             border-bottom: 2px solid #f39c12;
@@ -142,10 +125,27 @@
         }
         .tooltip-btn:hover { background-color: #34495e; }
 
-        /* Mobile responsiveness */
         @media (max-width: 900px) {
             .container { flex-direction: column; height: auto; }
             .panel { height: 500px; }
+        }
+
+        .drop-zone {
+            margin-top: 15px;
+            padding: 20px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            text-align: center;
+            color: #3498db;
+            background-color: #fdfdfd;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+            font-weight: bold;
+        }
+        .drop-zone.drag-over {
+            background-color: #e3f2fd;
+            border-color: #2980b9;
+            color: #2980b9;
         }
     </style>
 </head>
@@ -166,7 +166,11 @@
                 <h2>📥 Upload Email for Live Scan</h2>
                 <input type="file" id="emailFile" accept=".eml">
                 <button onclick="uploadEmail()">Extract Content</button>
-                
+
+                <div id="dropZone" class="drop-zone">
+                    Drag & drop an .eml file here.
+                </div>
+
                 <div style="margin-top: 20px;">
                     <label style="font-weight:bold; display:block; margin-bottom:5px;">Select AI Model:</label>
                     <select id="modelSelect">
@@ -206,7 +210,7 @@
     <script>
         let customSelectedText = "";
 
-        // Listens for mouseup to capture user text selection
+        // Capture mouse selection
         document.getElementById('emailDisplay').addEventListener('mouseup', function(e) {
             const selection = window.getSelection();
             const text = selection.toString().trim();
@@ -223,14 +227,14 @@
             }
         });
 
-        // Hides tooltip on outside click
+        // Hide tooltip on outside click
         document.addEventListener('mousedown', function(e) {
             if (e.target.id !== 'analyzeTooltip') {
                 document.getElementById('analyzeTooltip').classList.add('hidden');
             }
         });
 
-        // Passes custom selection to analysis
+        // Analyze custom selection
         function analyzeCustomSelection() {
             document.getElementById('analyzeTooltip').classList.add('hidden');
             const dummyElement = document.createElement('span');
@@ -246,8 +250,17 @@
                 return;
             }
 
+            const file = fileInput.files[0];
+
+            // Front-end extension check
+            if (!file.name.toLowerCase().endsWith('.eml')) {
+                alert("Only .eml files are allowed.");
+                fileInput.value = '';
+                return;
+            }
+
             const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
+            formData.append('file', file);
             document.getElementById('emailDisplay').innerText = "Extracting text...";
 
             try {
@@ -264,40 +277,34 @@
                 }
             } catch (err) {
                 document.getElementById('emailDisplay').innerText = "Upload failed.";
+            } finally {
+                // Always clear input after each run
+                fileInput.value = '';
             }
         }
 
         // Wraps suspicious words in span tags
-       function applyHighlights(text) {
-            // Escapes HTML entities
+        function applyHighlights(text) {
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            
-            // Defines the URL matching pattern
+
             const urlPattern = "https?:\\/\\/[^\\s]+";
-            
-            // Defines the email matching pattern
             const emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+";
-            
-            // Defines the comprehensive keyword matching pattern
             const keywordPattern = "urgent|immediate action required|password|verify your account|login|bank|invoice|wire transfer|payment|account suspended|unauthorized access|overdue|temporarily restricted|verify your identity|permanently suspended|funds will be locked|unusual activity|unrecognized device|secure link|24 hours|mandatory security update|credentials|immediately|temporarily locked out|locked out|microsoft 365|validate your current credentials|migration|it department";
 
-            // Combines patterns into a single regular expression
             const combinedRegex = new RegExp(`(${urlPattern}|${emailPattern}|\\b(?:${keywordPattern})\\b)`, 'gi');
 
-            // Replaces matches with clickable span elements
             safeText = safeText.replace(combinedRegex, match => {
                 const safeMatch = match.replace(/'/g, "\\'");
                 return `<span class="highlight" onclick="analyzeSnippet(this, '${safeMatch}')">${match}</span>`;
             });
 
-            // Updates the display with the highlighted text
             document.getElementById('emailDisplay').innerHTML = safeText;
         }
 
         // Sends clicked snippet to backend
         async function analyzeSnippet(element, text) {
             document.querySelectorAll('.highlight').forEach(el => el.classList.remove('active'));
-            if(element.classList) {
+            if (element && element.classList) {
                 element.classList.add('active');
             }
 
@@ -324,8 +331,6 @@
                 const scoreDiv = document.getElementById('threatScore');
                 scoreDiv.innerText = `Threat Score: ${data.score}/100`;
                 scoreDiv.className = 'score-badge';
-                
-                // Updated colors to match the new theme's color palette
                 if (data.score > 70) scoreDiv.classList.add('score-high');
                 else if (data.score > 30) scoreDiv.classList.add('score-med');
                 else scoreDiv.classList.add('score-low');
@@ -334,6 +339,48 @@
                 document.getElementById('loadingAnalysis').innerText = "Failed to analyze snippet.";
             }
         }
+
+        // Drag & Drop logic for .eml files
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('emailFile');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('drag-over');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('drag-over');
+            });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (!files || !files.length) return;
+
+            const file = files[0];
+
+            if (!file.name.toLowerCase().endsWith('.eml')) {
+                alert('Please drop a .eml file.');
+                return;
+            }
+
+            fileInput.files = files;
+            uploadEmail();
+        });
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
     </script>
 </body>
 </html>

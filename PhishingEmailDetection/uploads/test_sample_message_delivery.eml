@@ -1,0 +1,18 @@
+From: "Delivery Notice" <no-reply@shipment-alerts.example.com>
+To: target.user@washburn.edu
+Subject: ACTION REQUIRED: Package Delivery Attempt Failed
+Date: Mon, 20 Apr 2026 10:42:17 -0500
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Dear Customer,
+
+We attempted to deliver a package to your address today but were unable to complete the delivery due to an incomplete shipping address.
+
+To avoid having your package returned to sender, you must confirm your address and pay the outstanding redelivery fee within the next 24 hours. If you do not complete this verification, your shipment will be cancelled and the contents may be discarded.
+
+Please use the secure link below to confirm your details and reschedule delivery:
+http://tracking-ups-verify.example.net/redirect/secure-confirm
+
+Thank you,
+Shipping Support Team
