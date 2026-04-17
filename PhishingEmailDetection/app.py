@@ -4,6 +4,17 @@ import sys
 import json
 import uuid
 from datetime import datetime
+import email
+from email import policy
+from main import analyze_text_snippet as snippet_smollm
+from main_two import analyze_text_snippet as snippet_llama3
+from main_three import analyze_text_snippet as snippet_qwen
+
+SNIPPET_MODELS = {
+    'smollm': snippet_smollm,
+    'llama3': snippet_llama3,
+    'qwen': snippet_qwen
+}
 
 from main import run_phishguard_model as run_smollm
 from main_two import run_phishguard_model as run_llama3
@@ -163,6 +174,48 @@ def set_model(model_name):
     return render_template('index.html', 
                          models=MODELS, 
                          selected_model=session['selected_model'])
+
+@app.route('/realtime')
+def realtime():
+    # Renders the real-time interactive analysis page
+    if 'selected_model' not in session:
+        session['selected_model'] = 'qwen'
+    return render_template('realtime.html', 
+                         models=MODELS, 
+                         selected_model=session['selected_model'])
+
+@app.route('/api/extract_email', methods=['POST'])
+def extract_email():
+    # Parses the uploaded eml file and returns the plain text body
+    if 'file' not in request.files:
+        return {"error": "No file uploaded"}, 400
+    
+    file = request.files['file']
+    if file.filename == '' or not file.filename.endswith('.eml'):
+        return {"error": "Please upload a valid .eml file"}, 400
+
+    try:
+        msg = email.message_from_binary_file(file.stream, policy=policy.default)
+        body = msg.get_body(preferencelist=('plain'))
+        text_content = body.get_content() if body else "Could not extract text."
+        return {"text": text_content}
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+@app.route('/api/analyze_snippet', methods=['POST'])
+def analyze_snippet():
+    # Accepts a text snippet and selected model to return a threat analysis and score
+    data = request.json
+    snippet = data.get('text', '')
+    model_key = data.get('model', 'qwen')
+    
+    model_func = SNIPPET_MODELS.get(model_key, snippet_qwen)
+    
+    try:
+        result = model_func(snippet)
+        return result
+    except Exception as e:
+        return {"analysis": f"Model Error: {str(e)}", "score": 0}, 500
 
 if __name__ == '__main__':
     # Prints a plain-text confirmation so you know it's running

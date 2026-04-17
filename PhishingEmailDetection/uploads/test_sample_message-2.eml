@@ -1,0 +1,21 @@
+From: "IT Service Desk" <support@it-helpdesk-verify.example.com>
+To: employee@yourcompany.example.com
+Subject: ACTION REQUIRED: Mandatory Microsoft 365 Security Update
+Date: Wed, 08 Apr 2026 09:15:22 -0500
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Dear Employee,
+
+As part of our scheduled infrastructure upgrades, the IT department is rolling out a mandatory security update for all corporate Microsoft 365 accounts. 
+
+Our records indicate that your account has not yet been migrated to the new secure server. To prevent any disruption to your email, Outlook, and Teams access, please validate your current credentials immediately.
+
+If you do not complete this migration by 5:00 PM today, your account will be temporarily locked out pending a manual administrative review.
+
+Please complete your secure migration here:
+http://login.microsoftonline.company-portal.example.com/migration-auth
+
+Thank you for your prompt attention to this matter.
+
+IT Support Services

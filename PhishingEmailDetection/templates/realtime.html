@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard | Real-Time Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; }
+        
+        .navbar { background-color: #3498db; padding: 15px 0; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .navbar a { color: #ecf0f1; text-decoration: none; margin: 0 20px; font-weight: bold; font-size: 16px; }
+        
+        .container { display: flex; padding: 20px; gap: 20px; height: calc(100vh - 100px); }
+        .panel { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow-y: auto; position: relative; }
+        .upload-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        
+        .highlight { 
+            background-color: #ffeca8; 
+            border-bottom: 2px solid #f39c12;
+            border-radius: 3px; 
+            padding: 2px 4px;
+            margin: 0 1px;
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            color: #d35400;
+            font-weight: bold;
+        }
+        .highlight:hover { 
+            background-color: #f39c12; 
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .highlight.active { 
+            background-color: #e74c3c; 
+            border-color: #c0392b;
+            color: white; 
+        }
+
+        .score-badge { display: inline-block; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 1.2em; margin-bottom: 15px; }
+        .score-high { background-color: #ff7675; color: white; }
+        .score-med { background-color: #ffeaa7; color: #333; }
+        .score-low { background-color: #55efc4; color: #333; }
+        
+        .hidden { display: none; }
+        select { padding: 8px; margin-bottom: 15px; width: 100%; }
+        button { background-color: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+        
+        .tooltip-btn {
+            position: absolute;
+            background-color: #2c3e50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: background-color 0.2s;
+        }
+        .tooltip-btn:hover { background-color: #34495e; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+    <a href="/">Home</a>
+    <a href="/history">History</a>
+    <a href="/about">About</a>
+    <a href="/faq">FAQ</a>
+    <a href="/common_breaches">Common Breaches</a>
+    <a href="/howto">How-To</a>
+    <a href="/realtime">Real-Time Scan</a>
+</nav>
+
+    <div class="container">
+        <div class="panel">
+            <div class="upload-section">
+                <h2>Upload Email for Live Scan</h2>
+                <input type="file" id="emailFile" accept=".eml">
+                <button onclick="uploadEmail()">Extract Content</button>
+                
+                <div style="margin-top: 15px;">
+                    <label>Select AI Model:</label>
+                    <select id="modelSelect">
+                        {% for key, model in models.items() %}
+                        <option value="{{ key }}" {% if selected_model == key %}selected{% endif %}>
+                            {{ model.name }} ({{ model.speed }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div id="emailDisplay" style="white-space: pre-wrap; font-family: monospace; line-height: 1.5;">
+                Upload an .eml file to see the content here.
+            </div>
+            <div id="analyzeTooltip" class="tooltip-btn hidden" onclick="analyzeCustomSelection()">🔍 Analyze Selection</div>
+        </div>
+
+        <div class="panel">
+            <h2>AI Analysis</h2>
+            <p>Click on highlighted text or highlight your own text to analyze it.</p>
+            
+            <div id="loadingAnalysis" class="hidden">Analyzing with AI...</div>
+            
+            <div id="analysisResult" class="hidden">
+                <div id="threatScore" class="score-badge"></div>
+                <h4 style="margin-top:0;">Selected Text:</h4>
+                <blockquote id="selectedTextDisplay" style="background: #f9f9f9; padding: 10px; border-left: 4px solid #3498db; margin: 0 0 20px 0;"></blockquote>
+                <h4>AI Insights:</h4>
+                <p id="aiExplanation"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let customSelectedText = "";
+
+        // Listens for mouseup to capture user text selection
+        document.getElementById('emailDisplay').addEventListener('mouseup', function(e) {
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+            const tooltip = document.getElementById('analyzeTooltip');
+
+            if (text.length > 0) {
+                customSelectedText = text;
+                const panelRect = document.querySelector('.panel').getBoundingClientRect();
+                tooltip.style.left = (e.pageX - panelRect.left) + 'px';
+                tooltip.style.top = (e.pageY - panelRect.top - 40) + 'px';
+                tooltip.classList.remove('hidden');
+            } else {
+                tooltip.classList.add('hidden');
+            }
+        });
+
+        // Hides tooltip on outside click
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.id !== 'analyzeTooltip') {
+                document.getElementById('analyzeTooltip').classList.add('hidden');
+            }
+        });
+
+        // Passes custom selection to analysis
+        function analyzeCustomSelection() {
+            document.getElementById('analyzeTooltip').classList.add('hidden');
+            const dummyElement = document.createElement('span');
+            analyzeSnippet(dummyElement, customSelectedText);
+            window.getSelection().removeAllRanges();
+        }
+
+        // Uploads file and parses text data
+        async function uploadEmail() {
+            const fileInput = document.getElementById('emailFile');
+            if (!fileInput.files.length) {
+                alert("Please select an .eml file first.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            document.getElementById('emailDisplay').innerText = "Extracting text...";
+
+            try {
+                const response = await fetch('/api/extract_email', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.error) {
+                    document.getElementById('emailDisplay').innerText = "Error: " + data.error;
+                } else {
+                    applyHighlights(data.text);
+                }
+            } catch (err) {
+                document.getElementById('emailDisplay').innerText = "Upload failed.";
+            }
+        }
+
+        // Wraps suspicious words in span tags
+       function applyHighlights(text) {
+            // Escapes HTML entities
+            let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            
+            // Defines the URL matching pattern
+            const urlPattern = "https?:\\/\\/[^\\s]+";
+            
+            // Defines the email matching pattern
+            const emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+";
+            
+            // Defines the comprehensive keyword matching pattern
+            const keywordPattern = "urgent|immediate action required|password|verify your account|login|bank|invoice|wire transfer|payment|account suspended|unauthorized access|overdue|temporarily restricted|verify your identity|permanently suspended|funds will be locked|unusual activity|unrecognized device|secure link|24 hours|mandatory security update|credentials|immediately|temporarily locked out|locked out|microsoft 365|validate your current credentials|migration|it department";
+
+            // Combines patterns into a single regular expression
+            const combinedRegex = new RegExp(`(${urlPattern}|${emailPattern}|\\b(?:${keywordPattern})\\b)`, 'gi');
+
+            // Replaces matches with clickable span elements
+            safeText = safeText.replace(combinedRegex, match => {
+                const safeMatch = match.replace(/'/g, "\\'");
+                return `<span class="highlight" onclick="analyzeSnippet(this, '${safeMatch}')">${match}</span>`;
+            });
+
+            // Updates the display with the highlighted text
+            document.getElementById('emailDisplay').innerHTML = safeText;
+        }
+
+        // Sends clicked snippet to backend
+        async function analyzeSnippet(element, text) {
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('active'));
+            if(element.classList) {
+                element.classList.add('active');
+            }
+
+            const model = document.getElementById('modelSelect').value;
+            
+            document.getElementById('analysisResult').classList.add('hidden');
+            document.getElementById('loadingAnalysis').classList.remove('hidden');
+
+            try {
+                const response = await fetch('/api/analyze_snippet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text, model: model })
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('loadingAnalysis').classList.add('hidden');
+                document.getElementById('analysisResult').classList.remove('hidden');
+                
+                document.getElementById('selectedTextDisplay').innerText = text;
+                document.getElementById('aiExplanation').innerText = data.analysis;
+                
+                const scoreDiv = document.getElementById('threatScore');
+                scoreDiv.innerText = `Threat Score: ${data.score}/100`;
+                scoreDiv.className = 'score-badge';
+                if (data.score > 70) scoreDiv.classList.add('score-high');
+                else if (data.score > 30) scoreDiv.classList.add('score-med');
+                else scoreDiv.classList.add('score-low');
+                
+            } catch (err) {
+                document.getElementById('loadingAnalysis').innerText = "Failed to analyze snippet.";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -20,6 +20,50 @@ llm = Llama(
     verbose=False
 )
 
+def analyze_text_snippet(snippet):
+    # Calculates a heuristic threat score for the snippet
+    score = 0
+    text_to_search = snippet.lower()
+
+    # Checks for common typosquatting variations of target brands
+    suspicious_patterns = [r'paypa[1!il]', r'amaz[0o]n', r'micr[0o]s[0o]ft', r'app[1!il]e', r'netf[1!il]ix']
+    
+    for pattern in suspicious_patterns:
+        if re.search(pattern, text_to_search):
+            score += 45
+
+    urgency_keywords = ['urgent', 'immediately', 'suspended', '24 hours', 'verify your identity', 'locked']
+    found_urgency = [word for word in urgency_keywords if word in text_to_search]
+    if found_urgency:
+        score += 35
+
+    urls = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', snippet)
+    if urls:
+        score += 35
+
+    if score == 0:
+        score = 5
+    elif score > 99:
+        score = 99
+
+    # Generates a threat analysis explanation from the LLM
+    response = llm.create_chat_completion(
+        messages=[
+            # Instructs the AI to act as a strict cybersecurity analyst and specifically check for typosquatting
+            {"role": "system", "content": "You are a strict cybersecurity AI. Analyze the provided text snippet for phishing indicators. Look closely for typosquatting, domain spoofing, and urgency cues. Only analyze the exact text provided. Do not invent details or examples. Be strictly factual."},
+            {"role": "user", "content": f"Analyze this snippet:\n\n{snippet[:500]}"}
+        ],
+        max_tokens=600,
+        temperature=0.1, 
+        repeat_penalty=1.1,
+    )
+
+    # Returns the score and AI text explanation
+    return {
+        "score": score,
+        "analysis": response["choices"][0]["message"]["content"]
+    }
+
 def run_phishguard_model(email_filepath):
     print(f"Opening email: {email_filepath}")
     
@@ -69,7 +113,7 @@ def run_phishguard_model(email_filepath):
     print("Analyzing email with SmolLM2...\n" + "-"*30)
     response = llm.create_chat_completion(
         messages=[
-            {"role": "system", "content": "You are a cybersecurity AI. Analyze this email text for phishing. Briefly explain if it is safe or suspicious."},
+            {"role": "system", "content": "You are a strict cybersecurity AI. Analyze the provided text snippet for phishing indicators. Look closely for typosquatting, domain spoofing, and urgency cues. Only analyze the exact text provided. Do not invent details or examples. Be strictly factual."},
             {"role": "user", "content": f"Analyze this email:\n\n{email_text[:1000]}"}
         ],
         max_tokens=600,
