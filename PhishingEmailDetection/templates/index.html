@@ -37,7 +37,7 @@
 
         /* Animated Main Container */
         .container { 
-            max-width: 600px; 
+            max-width: 1000px; 
             margin: 0 auto; 
             background: white; 
             padding: 40px; 
@@ -84,8 +84,9 @@
         .model-name { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; color: #2c3e50;}
         .model-speed { display: block; font-size: 12px; color: #555; }
 
-        .upload-box { border: 2px dashed #3498db; padding: 40px; border-radius: 8px; background-color: #eaf2f8; transition: background-color 0.2s; }
+        .upload-box { border: 2px dashed #3498db; padding: 80px; border-radius: 8px; background-color: #eaf2f8; transition: background-color 0.2s; }
         .upload-box:hover { background-color: #e1edf7; }
+        
         
         input[type="file"] { margin-bottom: 20px; color: #333; }
         button { background-color: #3498db; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: background-color 0.2s; }
@@ -124,12 +125,49 @@
                 {% endfor %}
             </div>
 
-            <div class="upload-box">
-                <input type="file" name="file" accept=".eml" required>
-                <br>
-                <button type="submit">Analyze Email</button>
-            </div>
-            
+            <div class="upload-box" id="drop-zone">
+    <span style="font-size: 3rem; margin-bottom: 10px;">📩</span>
+    <p id="file-name" style="color: #7f8c8d; font-size: 0.9rem;">Drag & Drop your .eml file here</p>
+    <input type="file" id="file-input" name="file" accept=".eml">
+    <button type="submit" style="margin-top: 20px;">Scan File</button>
+</div>
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileNameDisplay = document.getElementById('file-name');
+
+    // Prevent browser from opening the file when dropped
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, e => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    // Visual feedback when dragging a file over the box
+    dropZone.addEventListener('dragover', () => {
+        dropZone.style.backgroundColor = "#e1edf7";
+        dropZone.style.borderStyle = "solid";
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.backgroundColor = "#eaf2f8";
+        dropZone.style.borderStyle = "dashed";
+    });
+
+    // Capture the dropped file
+    dropZone.addEventListener('drop', (e) => {
+        dropZone.style.backgroundColor = "#eaf2f8";
+        const files = e.dataTransfer.files;
+        
+        if (files.length > 0) {
+            fileInput.files = files; // Assign dropped file to the input
+            fileNameDisplay.innerText = "Ready to scan: " + files[0].name;
+            fileNameDisplay.style.color = "#2ecc71";
+            fileNameDisplay.style.fontWeight = "bold";
+        }
+    });
+</script>
         </form>
     </div>
 </body>
