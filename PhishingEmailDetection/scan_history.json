@@ -1,5 +1,37 @@
 [
     {
+        "score": 70,
+        "rules": [
+            "Urgency phrases detected: 24 hours",
+            "Link domain mismatch detected: http://tracking-ups-verify.example.net/redirect/secure-confirm"
+        ],
+        "explanation": "I analyzed the provided text snippet for phishing indicators and identified several typosquatting, domain spoofing, and urgency cues.\n\nThe email contains:\n\n1. \"We attempted to deliver a package\" - This is an example of a typo that should be corrected as \"we tried to deliver\".\n2. \"to your address today but were unable to complete the delivery due to an incomplete shipping address\" - This phrase could have been rephrased for clarity and accuracy, such as \"due to an incomplete shipping address.\"\n3. \"We attempted to deliver a package to your address today but was unable to complete the delivery due to an incomplete shipping address\" - This phrase should be corrected as \"we tried to deliver\".\n4. \"to avoid having your package returned to sender\" - This is another example of a typo that could have been rephrased for clarity and accuracy, such as \"avoided having your package returned.\"\n5. \"You must confirm your address and pay the outstanding redelivery fee within the next 24 hours\" - This phrase should be corrected as \"you must confirm your address and pay the outstanding redelivery fee.\"\n6. \"If you do not complete this verification, your shipment will be cancelled and the contents may be discarded\" - This phrase could have been rephrased for clarity and accuracy, such as \"if you do not complete this verification\".\n7. \"Please use the secure link below to confirm your details and reschedule delivery\" - This phrase should be corrected as \"please use the secure link.\"\n8. \"If you do not complete this verification, your shipment will be cancelled and the contents may be discarded\" - This phrase could have been rephrased for clarity and accuracy, such as \"if you do not complete this verification\".\n9. \"Please use the secure link below to confirm your details and reschedule delivery\" - This phrase should be corrected as \"please use the secure link.\"\n10. \"If you do not complete this verification, your shipment will be cancelled and the contents may be discarded\" - This phrase could have been rephrased for clarity and accuracy, such as \"if you do not complete this verification\".",
+        "model_used": "SmolLM2-135M",
+        "id": "c99a0dcc-7d98-45c8-b628-ef427d57a02a",
+        "timestamp": "2026-04-17 23:30:22"
+    },
+    {
+        "score": 35,
+        "rules": [
+            "Urgency phrases detected: immediately, 24 hours"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency**: The sender claims the offer is \"only available for the next 24 hours.\" This creates a sense of urgency that can trick recipients into acting quickly.\n\n2. **Typosquatting**: The URL provided, `http://secure-wealth-fasttrack.example.org/account/activate`, contains typosquatting elements such as \"example\" instead of \"example.com\". Typosquatters often use similar domain names to trick users into visiting their fake websites.\n\n3. **Domain Spoofing**: The email uses the domain name `account` from a legitimate financial service, which is likely spoofed to appear more trustworthy than it actually is.\n\n4. **Urgency Cues**: Phishing emails often include phrases like \"Do not miss this once-in-a-lifetime opportunity\" or \"Act now!\" These urgency cues are designed to make recipients feel compelled to take action quickly.\n\n5. **Typosquatting and Domain Spoofing Combined**: The combination of typosquatting (using a similar domain name) and domain spoofing (using the account domain from a legitimate service) makes it even more difficult for users to distinguish between the genuine website and the phishing site.\n\n6. **No Contact Information Provided**: The email does not provide any contact information or verification links, which is common in phishing emails as they aim to trick recipients into providing personal information without proper validation.",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "ecb4a665-8941-4f84-8f49-00eab3c1d1ed",
+        "timestamp": "2026-04-17 23:29:27"
+    },
+    {
+        "score": 70,
+        "rules": [
+            "Urgency phrases detected: 24 hours",
+            "Link domain mismatch detected: http://tracking-ups-verify.example.net/redirect/secure-confirm"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency Cues**: The message uses urgent language (\"within the next 24 hours\") to create a sense of urgency, which is common in phishing emails.\n\n2. **Typosquatting**: The domain name used for the secure link (tracking-ups-verify.example.net) appears suspiciously similar to legitimate domains like \"https://www.tracking.com\" or \"https://secure.confirmation.\" This could be a form of typosquatting, where someone has registered an address that closely resembles another but is not actually associated with it.\n\n3. **Domain Spoofing**: The domain name used for the secure link (tracking-ups-verify.example.net) appears to be spoofed because it does not match any known legitimate domains. This suggests that the sender might have intentionally created a fake domain or registered an address that closely resembles another but is not actually associated with it.\n\n4. **Urgency and Verification Request**: The message requests immediate verification of details, which is typical in phishing attempts to gather sensitive information quickly before users realize they are being targeted.\n\n5. **Confirmation Required**: The email explicitly states that the user must confirm their address and pay a fee within 24 hours, indicating a need for urgent action from the recipient.\n\n6. **No Contact Information Provided**: There is no contact information provided in the email to verify its legitimacy or provide any additional details about the sender's identity.\n\nThese elements combine to strongly",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "d46bafa6-cfb3-45f3-9713-02769d586628",
+        "timestamp": "2026-04-17 23:28:28"
+    },
+    {
         "score": 60,
         "rules": [
             "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
