@@ -88,12 +88,20 @@ def run_phishguard_model(email_filepath):
         score += 35
         triggered_rules.append(f"Urgency phrases detected: {', '.join(found_urgency)}")
 
-    # Rule 2: Suspicious Sender Formatting (Numbers in name)
+    # Rule 2:  Credential / payment request phrases 
+    sensitive_keywords = [ 'password', 'passcode', 'one-time code', 'otp','credit card', 'debit card', 'bank account','social security number', 'ssn']
+    found_sensitive = [word for word in sensitive_keywords if word in text_to_search]
+    if found_sensitive:
+        score += 25
+        triggered_rules.append(f"Sensitive information requested:  {', '.join(found_sensitive)}")
+
+
+    # Rule 3: Suspicious Sender Formatting (Numbers in name)
     if re.search(r'[0-9]', sender):
         score += 25
         triggered_rules.append("Sender email contains suspicious numbers (Possible spoofing)")
 
-    # Rule 3: Link Extraction & Domain Mismatch
+    # Rule 4: Link Extraction & Domain Mismatch
     urls = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', email_text)
     if urls:
         sender_domain = sender.split('@')[-1].strip(' >') if '@' in sender else ""
