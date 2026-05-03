@@ -2,6 +2,93 @@
     {
         "score": 60,
         "rules": [
+            "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
+            "Sender email contains suspicious numbers (Possible spoofing)"
+        ],
+        "explanation": "Analyzing the provided text snippet, we can identify several phishing indicators:\n\n1. **Typosquatting**: The email contains typos in domain names and addresses (e.g., \"www.\" instead of \"http://\" for www.paypa1-security-update.com). This is a common tactic used to trick users into providing sensitive information, such as their account access or login credentials.\n\n2. **Domain spoofing**: The email includes domain names that are not actually registered on the website (e.g., \"www.\" instead of \"http://\" for www.paypa1-security-update.com). This is another tactic used to trick users into providing sensitive information, such as their account access or login credentials.\n\n3. **Urgency cues**: The email mentions requiring verification within 24 hours and stating that it will be permanently suspended if not completed immediately (i.e., \"you must verify your identity\"). This indicates a high level of urgency and importance to the user's security, which is likely intended as a phishing tactic.\n\n4. **Security alerts**: The email includes a security alert about temporary restrictions on account access (\"Restore full access\") that can be triggered by verifying one's identity within 24 hours (i.e., \"you must verify your identity immediately\"). This indicates a high level of urgency and importance to the user's security, which is likely intended as a phishing tactic.\n\nOverall, the provided text snippet provides several indicators for phishing:\n\n1. **Typosquatting**: The email contains typos in domain names and addresses (e.g., \"www.\" instead of \"http://\" for www.paypa1-security-update.com). This is a common tactic used to trick users into providing sensitive information, such as their account access or login credentials.\n\n2. **Domain spoofing**: The email includes domain names that are not actually registered on the website (e.g., \"www.\" instead of \"http://\" for www.paypa1-security-update.com). This is another tactic used to trick users into providing sensitive information, such as their account access or login credentials.\n\n3. **Urgency cues**: The email includes security alerts about temporary restrictions on account access (\"Restore full access\") that can be triggered by verifying one's identity within 24 hours (i.e., \"you must verify your identity immediately\"). This indicates a high level of urgency and importance to the user's security, which is likely intended as a phishing tactic.\n\n4. **Security alerts**: The email includes a security alert about temporary restrictions on account access (\"Restore full access\") that can be triggered by verifying one's identity within 24 hours (i.e., \"you must verify your identity immediately\"). This indicates a high level of urgency and importance to the user's security, which is likely intended as a phishing",
+        "model_used": "SmolLM2-135M",
+        "id": "2093619d-044d-4094-b4c0-c19916679ac8",
+        "timestamp": "2026-04-28 15:48:01"
+    },
+    {
+        "score": 60,
+        "rules": [
+            "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
+            "Sender email contains suspicious numbers (Possible spoofing)"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency**: The message uses phrases like \"immediately\" and \"within the next 24 hours,\" which are common in phishing emails to create a sense of urgency.\n\n2. **Domain Spoofing**: The domain used for the link is `www.paypa1-security-update.com`, but PayPal's official website uses `https://www.paypal.com`. This indicates that the email is likely spoofed, as it directs users to a fake PayPal login page rather than the legitimate PayPal site.\n\n3. **Typosquatting**: The misspelling of \"PayPal\" in the URL suggests that this could be an attempt at typosquatting, where attackers create similar-looking URLs with minor spelling errors to trick users into entering their credentials.\n\n4. **Urgency Cues**: The message uses phrases like \"your account will be permanently suspended and all funds will be locked,\" which are typical in phishing emails designed to instill fear and urgency for the victim to comply with the request.\n\n5. **Security Team Mention**: While not inherently suspicious, mentioning a security team is common in phishing emails but does not provide additional context or credibility that would normally be expected from legitimate sources.\n\nIn conclusion, this email appears to be a phishing attempt designed to trick users into providing their login credentials by creating a sense of urgency and directing them to a fake PayPal login page.",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "d7e89071-21e2-485a-acee-e4a22c342e37",
+        "timestamp": "2026-04-28 15:47:47"
+    },
+    {
+        "score": 70,
+        "rules": [
+            "Urgency phrases detected: immediately, locked",
+            "Link domain mismatch detected: http://login.microsoftonline.company-portal.example.com/migration-auth"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency**: The message uses phrases like \"immediately\" and \"by 5:00 PM today,\" which are common in phishing emails to create a sense of urgency.\n\n2. **Typosquatting**: There is no typo on the domain name provided, but it's possible that someone might have used a similar spelling or misspelling for a legitimate service provider (e.g., \"company-portal.example.com\" instead of \"company-portal.com\").\n\n3. **Domain Spoofing**: The URL provided (\"http://login.microsoftonline.company-portal.example.com/migration-auth\") appears to be spoofed, as it doesn't match the official Microsoft login page.\n\n4. **Urgency Cues**: Phishing emails often use urgency cues such as \"immediately\" and \"urgent,\" which are used in this message.\n\n5. **Lack of Verification Mechanism**: The email does not provide a clear way to verify if the account is being migrated or what the security update entails, making it harder for recipients to determine if they should take action based on the information provided.\n\n6. **Incomplete Information**: The message lacks details about why the migration is necessary and how it will affect users' access to their accounts (e.g., email, Outlook, Teams).\n\n7. **Phishing Tactics**: Phishers often use generic greetings (\"Dear Employee\") and impersonate a trusted organization (in this case,",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "c504f6ad-3506-4310-b907-3318e927e35c",
+        "timestamp": "2026-04-28 15:47:32"
+    },
+    {
+        "score": 60,
+        "rules": [
+            "Urgency phrases detected: urgent, immediately, suspended, 24 hours, verify your identity, locked",
+            "Sender email contains suspicious numbers (Possible spoofing)"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency**: The message uses phrases like \"immediately\" and \"within the next 24 hours,\" which are common in phishing emails to create a sense of urgency.\n\n2. **Typosquatting**: The domain name used is \"paypa1-security-update.com.\" While this might be an error or typo, it's often seen as suspicious in phishing attempts where legitimate domains are altered for malicious purposes.\n\n3. **Domain Spoofing**: The email appears to be from a security team but uses the PayPal domain name (www.paypa1-security-update.com), which is not associated with any official PayPal service. This suggests that the sender has spoofed the domain, making it appear as if it's from PayPal.\n\n4. **Lack of Verification Mechanism**: The email does not provide clear instructions on how to verify identity or what information should be provided during this verification process. Phishing emails often lack such details and instead rely on urgency to trick recipients into providing sensitive information.\n\n5. **No Contact Information Provided**: There is no contact information (like an email address) provided for the sender, which makes it harder for users to verify if they are dealing with a legitimate organization or not.\n\nThese elements combine to strongly indicate that this message is likely a phishing attempt designed to trick recipients into providing personal and financial information.",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "7038d17d-0345-45fc-af6c-7be4a199eb82",
+        "timestamp": "2026-04-28 15:42:54"
+    },
+    {
+        "score": 70,
+        "rules": [
+            "Urgency phrases detected: immediately, locked",
+            "Link domain mismatch detected: http://login.microsoftonline.company-portal.example.com/migration-auth"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency**: The message is urgent, stating that the account will be locked out if not validated by 5:00 PM today.\n2. **Typosquatting**: The URL provided (http://login.microsoftonline.company-portal.example.com/migration-auth) has typos in both \"company\" and \"example\". This suggests a typo-squatted domain, which is common in phishing emails to trick users into entering personal information.\n3. **Domain spoofing**: While the email uses Microsoft's official URL (https://login.microsoftonline.com), it appears to be using an example domain name (\"company-portal.example.com\") instead of the real one (https://login.microsoftonline.com).\n4. **Urgency cues**: The message emphasizes urgency by stating that the account will be locked out if not validated, which is a common tactic in phishing emails.\n5. **Incomplete information**: While the email provides some details about the security update and its purpose, it does not provide any legitimate contact information or official source for this update.\n\nThese elements combined indicate that this message is likely a phishing attempt to trick users into providing personal account information.",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "95edb87d-b4e1-4c0f-b265-782c30618ec3",
+        "timestamp": "2026-04-21 14:48:39"
+    },
+    {
+        "score": 60,
+        "rules": [
+            "Urgency phrases detected: urgent, suspended, 24 hours, verify your identity",
+            "Sensitive information requested:  password, one-time code"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n1. **Urgency**: The message is urgent, stating that the account will be suspended within 24 hours.\n2. **Typosquatting**: \"Microsoft Teams\" appears to be a typo for \"Microsoft Teams,\" which could lead users to believe it's legitimate.\n3. **Domain Spoofing**: The sender address \"Security Team\" does not match any known official Microsoft Teams domain, indicating spoofing of the email address.\n\nThe message also requests sensitive information (password and one-time code), which is a common tactic in phishing attempts to steal credentials.",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "73807e80-47c2-43a4-ac05-f8424f49cb0c",
+        "timestamp": "2026-04-21 14:47:59"
+    },
+    {
+        "score": 70,
+        "rules": [
+            "Urgency phrases detected: immediately, locked",
+            "Link domain mismatch detected: http://login.microsoftonline.company-portal.example.com/migration-auth"
+        ],
+        "explanation": "This email contains several indicators of phishing:\n\n1. **Urgency**: The message uses phrases like \"immediately\" and \"by 5:00 PM today,\" which are common in phishing emails to create a sense of urgency.\n\n2. **Typosquatting**: There is no typo on the domain name provided, but it's possible that someone might have used a similar spelling or misspelling for a legitimate service provider (e.g., \"company-portal.example.com\" instead of \"company-portal.com\").\n\n3. **Domain Spoofing**: The URL provided (\"http://login.microsoftonline.company-portal.example.com/migration-auth\") appears to be spoofed, as it doesn't match the official Microsoft login page.\n\n4. **Urgency Cues**: Phishing emails often use urgency cues such as \"immediately\" and \"urgent,\" which are used in this message.\n\n5. **Lack of Verification Mechanism**: The email does not provide a clear way to verify if the account is being migrated or what the security update entails, making it harder for recipients to determine if they should take action based on the information provided.\n\n6. **Incomplete Information**: The message lacks details about why the migration is necessary and how it will affect users' access to their accounts (e.g., email, Outlook, Teams).\n\n7. **Phishing Tactics**: Phishers often use generic greetings (\"Dear Employee\") and impersonate a trusted organization (in this case,",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "36be5700-f06a-42e6-b2d4-725406b3c4f5",
+        "timestamp": "2026-04-21 14:47:52"
+    },
+    {
+        "score": 35,
+        "rules": [
+            "Urgency phrases detected: immediately, 24 hours"
+        ],
+        "explanation": "The email contains several indicators of phishing:\n\n1. **Typosquatting**: The domain name \"secure-wealth-fasttrack.example.org\" is misspelled and does not match the legitimate website for Premier Wealth Acceleration Team.\n2. **Domain spoofing**: The sender's address appears to be a typo, suggesting that the email was sent from an account with a similar but incorrect domain.\n3. **Urgency cues**: The message uses phrases like \"only available for the next 24 hours\" and \"do not miss this once-in-a-lifetime opportunity,\" which are common in phishing emails designed to create a sense of urgency and fear, encouraging recipients to act quickly without fully understanding the content.\n\nThese elements strongly indicate that the email is likely a phishing attempt.",
+        "model_used": "Qwen2.5-1.5B",
+        "id": "4b9dd01b-b109-488c-bc7a-ce4cd7b293df",
+        "timestamp": "2026-04-21 14:47:29"
+    },
+    {
+        "score": 60,
+        "rules": [
             "Urgency phrases detected: urgent, suspended, 24 hours, verify your identity",
             "Sensitive information requested:  password, one-time code"
         ],
