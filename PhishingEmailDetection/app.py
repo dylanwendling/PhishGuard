@@ -191,21 +191,47 @@ def realtime():
 
 @app.route('/api/extract_email', methods=['POST'])
 def extract_email():
-    # Parses the uploaded eml file and returns the plain text body
+    # Parses the uploaded eml file and returns plain/HTML text content
     if 'file' not in request.files:
         return {"error": "No file uploaded"}, 400
     
     file = request.files['file']
-    if file.filename == '' or not file.filename.endswith('.eml'):
+    if file.filename == '':
+        return {"error": "Please select an .eml file"}, 400
+        
+    if not file.filename.lower().endswith('.eml'):
         return {"error": "Please upload a valid .eml file"}, 400
 
     try:
         msg = email.message_from_binary_file(file.stream, policy=policy.default)
-        body = msg.get_body(preferencelist=('plain'))
-        text_content = body.get_content() if body else "Could not extract text."
-        return {"text": text_content}
+        body = msg.get_body(preferencelist=('plain', 'html'))
+        if body:
+            text_content = body.get_content()
+        else:
+            parts = []
+            for part in msg.walk():
+                if part.get_content_type() in ['text/plain', 'text/html']:
+                    try:
+                        content = part.get_content()
+                        if content:
+                            parts.append(str(content))
+                    except Exception:
+                        pass
+            text_content = "\n".join(parts) if parts else "Could not extract text."
+            
+        subject = msg.get('subject', '')
+        sender = msg.get('from', '')
+        header_prefix = ""
+        if subject:
+            header_prefix += f"Subject: {subject}\n"
+        if sender:
+            header_prefix += f"From: {sender}\n"
+        if header_prefix:
+            header_prefix += "-" * 40 + "\n\n"
+
+        return {"text": header_prefix + text_content}
     except Exception as e:
-        return {"error": str(e)}, 500
+        return {"error": f"Error parsing email: {str(e)}"}, 500
 
 @app.route('/api/analyze_snippet', methods=['POST'])
 def analyze_snippet():

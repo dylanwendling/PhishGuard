@@ -252,8 +252,8 @@
         // Uploads file and parses text data
         async function uploadEmail() {
             const fileInput = document.getElementById('emailFile');
-            if (!fileInput.files.length) {
-                alert("Please select an .eml file first.");
+            if (!fileInput.files || !fileInput.files.length) {
+                alert("Please select or drop an .eml file first.");
                 return;
             }
 
@@ -262,13 +262,12 @@
             // Front-end extension check
             if (!file.name.toLowerCase().endsWith('.eml')) {
                 alert("Only .eml files are allowed.");
-                fileInput.value = '';
                 return;
             }
 
             const formData = new FormData();
             formData.append('file', file);
-            document.getElementById('emailDisplay').innerText = "Extracting text...";
+            document.getElementById('emailDisplay').innerText = "⏳ Extracting text from .eml file...";
 
             try {
                 const response = await fetch('/api/extract_email', {
@@ -283,14 +282,18 @@
                     applyHighlights(data.text);
                 }
             } catch (err) {
-                document.getElementById('emailDisplay').innerText = "Upload failed.";
-            } finally {
-                // Always clear input after each run
-                fileInput.value = '';
+                document.getElementById('emailDisplay').innerText = "Upload failed: " + err.message;
             }
         }
 
-        // Wraps suspicious words in span tags
+        // Auto-extract on file picker selection
+        document.getElementById('emailFile').addEventListener('change', function() {
+            if (this.files && this.files.length) {
+                uploadEmail();
+            }
+        });
+
+        // Wraps suspicious words in span tags with safe data attributes
         function applyHighlights(text) {
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -301,12 +304,22 @@
             const combinedRegex = new RegExp(`(${urlPattern}|${emailPattern}|\\b(?:${keywordPattern})\\b)`, 'gi');
 
             safeText = safeText.replace(combinedRegex, match => {
-                const safeMatch = match.replace(/'/g, "\\'");
-                return `<span class="highlight" onclick="analyzeSnippet(this, '${safeMatch}')">${match}</span>`;
+                const encodedMatch = encodeURIComponent(match);
+                return `<span class="highlight" data-snippet="${encodedMatch}">${match}</span>`;
             });
 
             document.getElementById('emailDisplay').innerHTML = safeText;
         }
+
+        // Delegation listener for highlight clicks (avoids inline syntax errors)
+        document.getElementById('emailDisplay').addEventListener('click', function(e) {
+            const highlightEl = e.target.closest('.highlight');
+            if (highlightEl) {
+                const encodedSnippet = highlightEl.getAttribute('data-snippet');
+                const snippet = encodedSnippet ? decodeURIComponent(encodedSnippet) : highlightEl.innerText;
+                analyzeSnippet(highlightEl, snippet);
+            }
+        });
 
         // Sends clicked snippet to backend
         async function analyzeSnippet(element, text) {

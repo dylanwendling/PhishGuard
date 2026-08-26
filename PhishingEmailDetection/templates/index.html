@@ -126,48 +126,68 @@
             </div>
 
             <div class="upload-box" id="drop-zone">
-    <span style="font-size: 3rem; margin-bottom: 10px;">📩</span>
-    <p id="file-name" style="color: #7f8c8d; font-size: 0.9rem;">Drag & Drop your .eml file here</p>
-    <input type="file" id="file-input" name="file" accept=".eml">
-    <button type="submit" style="margin-top: 20px;">Scan File</button>
-</div>
-<script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const fileNameDisplay = document.getElementById('file-name');
+                <span style="font-size: 3rem; margin-bottom: 10px;">📩</span>
+                <p id="file-name" style="color: #7f8c8d; font-size: 0.9rem;">Drag & Drop your .eml file here</p>
+                <input type="file" id="file-input" name="file" accept=".eml">
+                <button type="submit" id="scan-btn" style="margin-top: 20px;">Scan File</button>
+            </div>
+            <script>
+                const dropZone = document.getElementById('drop-zone');
+                const fileInput = document.getElementById('file-input');
+                const fileNameDisplay = document.getElementById('file-name');
+                const uploadForm = document.getElementById('upload-form');
+                const scanBtn = document.getElementById('scan-btn');
 
-    // Prevent browser from opening the file when dropped
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, e => {
-            e.preventDefault();
-            e.stopPropagation();
-        }, false);
-    });
+                // Update file name display when picked via browser
+                fileInput.addEventListener('change', () => {
+                    if (fileInput.files && fileInput.files.length) {
+                        fileNameDisplay.innerText = "Ready to scan: " + fileInput.files[0].name;
+                        fileNameDisplay.style.color = "#2ecc71";
+                        fileNameDisplay.style.fontWeight = "bold";
+                    }
+                });
 
-    // Visual feedback when dragging a file over the box
-    dropZone.addEventListener('dragover', () => {
-        dropZone.style.backgroundColor = "#e1edf7";
-        dropZone.style.borderStyle = "solid";
-    });
+                // Prevent browser from opening file on drop
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
 
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.style.backgroundColor = "#eaf2f8";
-        dropZone.style.borderStyle = "dashed";
-    });
+                dropZone.addEventListener('dragover', () => {
+                    dropZone.style.backgroundColor = "#e1edf7";
+                    dropZone.style.borderStyle = "solid";
+                });
 
-    // Capture the dropped file
-    dropZone.addEventListener('drop', (e) => {
-        dropZone.style.backgroundColor = "#eaf2f8";
-        const files = e.dataTransfer.files;
-        
-        if (files.length > 0) {
-            fileInput.files = files; // Assign dropped file to the input
-            fileNameDisplay.innerText = "Ready to scan: " + files[0].name;
-            fileNameDisplay.style.color = "#2ecc71";
-            fileNameDisplay.style.fontWeight = "bold";
-        }
-    });
-</script>
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.style.backgroundColor = "#eaf2f8";
+                    dropZone.style.borderStyle = "dashed";
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    dropZone.style.backgroundColor = "#eaf2f8";
+                    const files = e.dataTransfer.files;
+                    
+                    if (files && files.length > 0) {
+                        fileInput.files = files;
+                        fileNameDisplay.innerText = "Ready to scan: " + files[0].name;
+                        fileNameDisplay.style.color = "#2ecc71";
+                        fileNameDisplay.style.fontWeight = "bold";
+                    }
+                });
+
+                uploadForm.addEventListener('submit', (e) => {
+                    if (!fileInput.files || !fileInput.files.length) {
+                        e.preventDefault();
+                        alert("Please select or drop an .eml file to scan.");
+                        return false;
+                    }
+                    scanBtn.disabled = true;
+                    scanBtn.innerText = "⏳ Scanning Email with AI... Please wait...";
+                    scanBtn.style.backgroundColor = "#e67e22";
+                });
+            </script>
         </form>
     </div>
 </body>
