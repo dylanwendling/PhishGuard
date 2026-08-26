@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.env
+uploads/*
+!uploads/.gitkeep
+scan_history.json
+.ipynb_checkpoints/

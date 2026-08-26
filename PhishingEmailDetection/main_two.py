@@ -1,24 +1,26 @@
 import email
 from email import policy
 import re
-from huggingface_hub import hf_hub_download
-from llama_cpp import Llama
+_llm_instance = None
 
-# 1. Download the GGUF model
-print("Downloading GGUF model...")
-model_path = hf_hub_download(
-    repo_id="bartowski/Llama-3.2-1B-Instruct-GGUF",
-    filename="Llama-3.2-1B-Instruct-Q4_K_M.gguf"
-)
-
-# 2. Load the model into the Llama engine
-print("Loading model...")
-llm = Llama(
-    model_path=model_path,
-    n_ctx=2048,
-    chat_format="chatml",
-    verbose=False
-)
+def get_llm():
+    global _llm_instance
+    if _llm_instance is None:
+        from huggingface_hub import hf_hub_download
+        from llama_cpp import Llama
+        print("Downloading Llama-3.2-1B GGUF model...")
+        model_path = hf_hub_download(
+            repo_id="bartowski/Llama-3.2-1B-Instruct-GGUF",
+            filename="Llama-3.2-1B-Instruct-Q4_K_M.gguf"
+        )
+        print("Loading Llama-3.2-1B model...")
+        _llm_instance = Llama(
+            model_path=model_path,
+            n_ctx=2048,
+            chat_format="chatml",
+            verbose=False
+        )
+    return _llm_instance
 
 def analyze_text_snippet(snippet):
     # Calculates a heuristic threat score for the snippet
@@ -47,7 +49,7 @@ def analyze_text_snippet(snippet):
         score = 99
 
     # Generates a threat analysis explanation from the LLM
-    response = llm.create_chat_completion(
+    response = get_llm().create_chat_completion(
         messages=[
             {"role": "system", "content": "You are a strict cybersecurity AI. Analyze the provided text snippet for phishing indicators. Look closely for typosquatting, domain spoofing, and urgency cues. Only analyze the exact text provided. Do not invent details or examples. Be strictly factual."},
             {"role": "user", "content": f"Analyze this snippet:\n\n{snippet[:500]}"}
@@ -117,7 +119,7 @@ def run_phishguard_model(email_filepath):
 
     # --- C. AI Analysis ---
     print("Analyzing email with Llama-3.2...\n" + "-"*30)
-    response = llm.create_chat_completion(
+    response = get_llm().create_chat_completion(
         messages=[
             {"role": "system", "content": "You are a strict cybersecurity AI. Analyze the provided text snippet for phishing indicators. Look closely for typosquatting, domain spoofing, and urgency cues. Only analyze the exact text provided. Do not invent details or examples. Be strictly factual."},
             {"role": "user", "content": f"Analyze this email:\n\n{email_text[:1000]}"}

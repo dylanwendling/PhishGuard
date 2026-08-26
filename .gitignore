@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.gguf
+.DS_Store
+PhishingEmailDetection/uploads/*
+!PhishingEmailDetection/uploads/.gitkeep
+PhishingEmailDetection/scan_history.json

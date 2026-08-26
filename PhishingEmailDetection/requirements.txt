@@ -1,0 +1,5 @@
+Flask>=3.0.0
+gunicorn>=21.2.0
+huggingface-hub>=0.20.0
+llama-cpp-python>=0.2.70
+werkzeug>=3.0.0
