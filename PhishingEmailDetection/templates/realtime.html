@@ -274,10 +274,18 @@
                     method: 'POST',
                     body: formData
                 });
-                const data = await response.json();
                 
-                if (data.error) {
-                    document.getElementById('emailDisplay').innerText = "Error: " + data.error;
+                let data = {};
+                const responseText = await response.text();
+                try {
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    document.getElementById('emailDisplay').innerText = "Server Error (" + response.status + "): Server is building or restarting. Please wait 30 seconds and try again.";
+                    return;
+                }
+
+                if (!response.ok || data.error) {
+                    document.getElementById('emailDisplay').innerText = "Error: " + (data.error || response.statusText);
                 } else {
                     applyHighlights(data.text);
                 }
@@ -332,7 +340,7 @@
             
             document.getElementById('analysisResult').classList.add('hidden');
             const loadingEl = document.getElementById('loadingAnalysis');
-            loadingEl.innerText = "⏳ Analyzing with AI... (First run may take a few seconds to load model)";
+            loadingEl.innerText = "⏳ Analyzing with AI... Please wait...";
             loadingEl.classList.remove('hidden');
 
             try {
@@ -342,8 +350,16 @@
                     body: JSON.stringify({ text: text, model: model })
                 });
                 
-                const data = await response.json();
+                let data = {};
+                const responseText = await response.text();
                 loadingEl.classList.add('hidden');
+
+                try {
+                    data = JSON.parse(responseText);
+                } catch (e) {
+                    alert("Server Response Notice (" + response.status + "): The server is currently building or restarting. Please retry in 30 seconds.");
+                    return;
+                }
 
                 if (!response.ok || data.error) {
                     const errText = data.analysis || data.error || "Server Error";
