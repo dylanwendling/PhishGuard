@@ -12,15 +12,13 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install pre-compiled CPU binary wheel for llama-cpp-python (fast, avoids compiling C++ from source)
+# Install pre-compiled CPU binary wheel for llama-cpp-python
 RUN pip install llama-cpp-python --only-binary llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu --no-cache-dir
 
 # Copy application files
 COPY . .
 
-# Set default port environment variable
-ENV PORT=5000
-EXPOSE ${PORT}
+ENV PORT=10000
+EXPOSE 10000
 
-# Run production server using Gunicorn
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT} --workers 1 --threads 4 --timeout 300 app:app"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --threads 2 --timeout 300 app:app"]
