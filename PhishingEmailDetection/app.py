@@ -60,9 +60,9 @@ def save_to_history(result_data):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Sets default model to Qwen if not already set
+    # Sets default model to SmolLM2 (fastest & lightweight) if not already set
     if 'selected_model' not in session:
-        session['selected_model'] = 'qwen'
+        session['selected_model'] = 'smollm'
     
     if request.method == 'POST':
         # Updates the selected model based on user input
@@ -184,7 +184,7 @@ def set_model(model_name):
 def realtime():
     # Renders the real-time interactive analysis page
     if 'selected_model' not in session:
-        session['selected_model'] = 'qwen'
+        session['selected_model'] = 'smollm'
     return render_template('realtime.html', 
                          models=MODELS, 
                          selected_model=session['selected_model'])
@@ -238,9 +238,9 @@ def analyze_snippet():
     # Accepts a text snippet and selected model to return a threat analysis and score
     data = request.json
     snippet = data.get('text', '')
-    model_key = data.get('model', 'qwen')
+    model_key = data.get('model', 'smollm')
     
-    model_func = SNIPPET_MODELS.get(model_key, snippet_qwen)
+    model_func = SNIPPET_MODELS.get(model_key, snippet_smollm)
     
     try:
         result = model_func(snippet)
