@@ -331,7 +331,9 @@
             const model = document.getElementById('modelSelect').value;
             
             document.getElementById('analysisResult').classList.add('hidden');
-            document.getElementById('loadingAnalysis').classList.remove('hidden');
+            const loadingEl = document.getElementById('loadingAnalysis');
+            loadingEl.innerText = "⏳ Analyzing with AI... (First run may take a few seconds to load model)";
+            loadingEl.classList.remove('hidden');
 
             try {
                 const response = await fetch('/api/analyze_snippet', {
@@ -341,22 +343,29 @@
                 });
                 
                 const data = await response.json();
-                
-                document.getElementById('loadingAnalysis').classList.add('hidden');
+                loadingEl.classList.add('hidden');
+
+                if (!response.ok || data.error) {
+                    const errText = data.analysis || data.error || "Server Error";
+                    alert("AI Analysis Error: " + errText + "\n\nTip: If hosting on free cloud servers (Render Free Tier 512MB RAM), please select SmolLM2-135M.");
+                    return;
+                }
+
                 document.getElementById('analysisResult').classList.remove('hidden');
-                
                 document.getElementById('selectedTextDisplay').innerText = text;
-                document.getElementById('aiExplanation').innerText = data.analysis;
+                document.getElementById('aiExplanation').innerText = data.analysis || "No analysis details returned.";
                 
                 const scoreDiv = document.getElementById('threatScore');
-                scoreDiv.innerText = `Threat Score: ${data.score}/100`;
+                const score = data.score !== undefined ? data.score : 50;
+                scoreDiv.innerText = `Threat Score: ${score}/100`;
                 scoreDiv.className = 'score-badge';
-                if (data.score > 70) scoreDiv.classList.add('score-high');
-                else if (data.score > 30) scoreDiv.classList.add('score-med');
+                if (score > 70) scoreDiv.classList.add('score-high');
+                else if (score > 30) scoreDiv.classList.add('score-med');
                 else scoreDiv.classList.add('score-low');
                 
             } catch (err) {
-                document.getElementById('loadingAnalysis').innerText = "Failed to analyze snippet.";
+                loadingEl.classList.add('hidden');
+                alert("AI Request Failed: " + err.message + "\n\nPlease ensure SmolLM2-135M is selected for free cloud hosting.");
             }
         }
 
