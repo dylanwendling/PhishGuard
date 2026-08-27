@@ -203,7 +203,8 @@ def extract_email():
         return {"error": "Please upload a valid .eml file"}, 400
 
     try:
-        msg = email.message_from_binary_file(file.stream, policy=policy.default)
+        raw_bytes = file.read()
+        msg = email.message_from_bytes(raw_bytes, policy=policy.default)
         body = msg.get_body(preferencelist=('plain', 'html'))
         if body:
             text_content = body.get_content()
