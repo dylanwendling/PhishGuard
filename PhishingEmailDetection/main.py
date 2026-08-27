@@ -55,7 +55,7 @@ def analyze_text_snippet(snippet):
             {"role": "system", "content": "You are a strict cybersecurity AI. Analyze the provided text snippet for phishing indicators. Look closely for typosquatting, domain spoofing, and urgency cues. Only analyze the exact text provided. Do not invent details or examples. Be strictly factual."},
             {"role": "user", "content": f"Analyze this snippet:\n\n{snippet[:500]}"}
         ],
-        max_tokens=600,
+        max_tokens=200,
         temperature=0.1, 
         repeat_penalty=1.1,
     )
@@ -126,7 +126,7 @@ def run_phishguard_model(email_filepath):
             {"role": "system", "content": "You are a strict cybersecurity AI. Analyze the provided text snippet for phishing indicators. Look closely for typosquatting, domain spoofing, and urgency cues. Only analyze the exact text provided. Do not invent details or examples. Be strictly factual."},
             {"role": "user", "content": f"Analyze this email:\n\n{email_text[:1000]}"}
         ],
-        max_tokens=600,
+        max_tokens=200,
         temperature=0.2,
         repeat_penalty=1.1,
     )
